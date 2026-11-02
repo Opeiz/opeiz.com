@@ -2,7 +2,7 @@ import { ArrowUpRight, FileText, Languages, Mail, MapPin, Trophy } from "lucide-
 import Image from "next/image";
 import Link from "next/link";
 import { ExperienceCarousel } from "@/components/ExperienceCarousel";
-import { GameOfLife } from "@/components/GameOfLife";
+import { VisionLab } from "@/components/VisionLab";
 import { Icon } from "@/components/Icon";
 import { cv, formatRange, type IconName } from "@/data/cv";
 
@@ -14,7 +14,7 @@ import { cv, formatRange, type IconName } from "@/data/cv";
 const NAV = [
   { href: "#experience", label: "Experience" },
   { href: "#off-the-clock", label: "Off the clock" },
-  { href: "#game", label: "Game" },
+  { href: "#vision", label: "Vision" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -136,24 +136,15 @@ export default function Home() {
           </ul>
         </Section>
 
-        {/* 4. GAME -------------------------------------------------------- */}
+        {/* 4. VISION ------------------------------------------------------ */}
         <Section
-          id="game"
+          id="vision"
           number="03"
-          label="Game"
-          title="Bored? Try the Game of Life"
-          intro="Conway's Game of Life: every cell lives or dies based on its 8 neighbours. Draw some cells, press Play, and watch the patterns move."
+          label="Vision"
+          title="How a machine sees"
+          intro="I think visually, which is why I studied image processing and computer vision. To a computer, an image is just a grid of numbers, and a filter is a tiny grid that slides over it. Try it:"
         >
-          <GameOfLife />
-          <details className="mt-4 rounded-2xl border border-border bg-surface p-4 text-sm leading-relaxed">
-            <summary className="cursor-pointer font-medium">The 4 rules</summary>
-            <ul className="mt-3 list-disc space-y-1 pl-5 text-muted">
-              <li>A live cell with fewer than 2 neighbours dies (loneliness).</li>
-              <li>A live cell with 2 or 3 neighbours survives.</li>
-              <li>A live cell with more than 3 neighbours dies (crowding).</li>
-              <li>A dead cell with exactly 3 neighbours comes alive.</li>
-            </ul>
-          </details>
+          <VisionLab />
         </Section>
 
         {/* 5. CONTACT ----------------------------------------------------- */}
