@@ -1,6 +1,6 @@
 # Joaquin Opazo Yentzen · Personal site
 
-My CV and portfolio: a one-page site with my experience, a bit about me off the clock, a small Game of Life to play with, and a way to get in touch.
+My CV and portfolio: a one-page site with my experience, a bit about me off the clock, a small computer vision lab (image filters, live camera), and a way to get in touch.
 
 Prefer paper? A classic, printable CV lives at [`/cv`](https://opeiz-com.vercel.app/cv).
 
@@ -11,7 +11,7 @@ Next.js 16 (App Router) + TypeScript · Tailwind CSS v4 · Vercel
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm test           # Game of Life rules
+npm test           # image filter math
 npm run build      # same build Vercel runs
 ```
 
@@ -21,8 +21,8 @@ npm run build      # same build Vercel runs
 | `src/data/cv.ts` | All the content (edit this to update the site) |
 | `src/app/page.tsx` | The one-page site |
 | `src/app/cv/page.tsx` | The printable classic CV |
-| `src/components/` | Experience carousel, Game of Life |
-| `src/lib/life.ts` | Game of Life rules (pure functions + tests) |
+| `src/components/` | Experience carousel, vision lab |
+| `src/lib/vision.ts` | Image filters: convolution, Sobel, threshold (pure functions + tests) |
 
 ## Roadmap
 See [PLAN.md](PLAN.md).

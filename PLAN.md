@@ -1,10 +1,10 @@
 # Personal Site Plan
 
-A **professional one-page site**: a clean CV and portfolio that scrolls through a few sections, with one small playful corner (a game). It's also my project for **learning full stack**.
+A **professional one-page site**: a clean CV and portfolio that scrolls through a few sections, with one interactive corner that shows how I think: **a computer vision lab** (I think visually, and studied image processing, filters, deep learning and computer vision). It's also my project for **learning full stack**.
 
 It reflects who I am: **visual, puzzles, strategy, solutions, coding**, but recruiters see a professional page first.
 
-> Inspiration: ricfergas.com and mightbesimon.com (friendly greeting hero, single centered column, simple menu, warm but professional tone, a small game to "burn 5 minutes", language switcher).
+> Inspiration: ricfergas.com and mightbesimon.com (friendly greeting hero, single centered column, simple menu, warm but professional tone, a small interactive corner, language switcher).
 
 ---
 
@@ -14,7 +14,7 @@ One page (`/`), sections stacked top to bottom, plus the classic CV at `/cv`.
 
 ```
 ┌───────────────────────────────────────────────┐
-│ Joaquin.  Experience · Off the clock · Game · Contact   [CV] │ ← sticky menu
+│ Joaquin.  Experience · Off the clock · Vision · Contact [CV] │ ← sticky menu
 ├───────────────────────────────────────────────┤
 │ ABOUT       "Hi, I'm Joaquin 👋", name, role, summary, chips, buttons │
 ├───────────────────────────────────────────────┤
@@ -23,7 +23,7 @@ One page (`/`), sections stacked top to bottom, plus the classic CV at `/cv`.
 ├───────────────────────────────────────────────┤
 │ 02 OFF THE CLOCK  hobbies (cards) + fun facts │
 ├───────────────────────────────────────────────┤
-│ 03 BORED?   Conway's Game of Life (canvas)    │
+│ 03 VISION   "How a machine sees": filters lab │
 ├───────────────────────────────────────────────┤
 │ 04 CONTACT  email, LinkedIn, GitHub           │
 ├───────────────────────────────────────────────┤
@@ -37,7 +37,7 @@ One page (`/`), sections stacked top to bottom, plus the classic CV at `/cv`.
 | About | `page.tsx` | Photo or initials, summary from `cv.summary` |
 | Experience | `src/components/ExperienceCarousel.tsx` | CSS scroll-snap (swipe for free), ◀ ▶, dots, arrow keys, re-snaps on resize |
 | Off the clock | `page.tsx` | `cv.hobbies` and `cv.funFacts` |
-| Game | `src/components/GameOfLife.tsx` + `src/lib/life.ts` | Canvas, play/step/random/clear, draw with mouse/finger. Logic is pure and tested. |
+| Vision | `src/components/VisionLab.tsx` + `src/lib/vision.ts` + `src/lib/scene.ts` | Filters (grayscale, Gaussian blur, sharpen, Sobel edges, emboss, threshold), before/after slider, kernel + convolution diagram, sample scene drawn with code, your photo or live camera (processed in the browser, never uploaded). Filter math is pure and tested. |
 | Contact | `page.tsx` | `mailto:` for now; real form in Phase 3 |
 | Classic CV | `src/app/cv/page.tsx` | Printable, PDF download when `cv.pdfUrl` is set |
 
@@ -45,8 +45,8 @@ One page (`/`), sections stacked top to bottom, plus the classic CV at `/cv`.
 
 ### Rules (do not skip)
 - The **classic CV** (`/cv`) is always one click away (menu "CV" button).
-- **Keyboard**: everything works without a mouse (carousel arrow keys, game buttons).
-- **Reduce motion**: no smooth scrolling and no auto-playing animation when the visitor asks for less motion. The game never starts on its own.
+- **Keyboard**: everything works without a mouse (carousel arrow keys, filter buttons, compare slider).
+- **Reduce motion**: no smooth scrolling and no auto-playing animation when the visitor asks for less motion. The camera never starts on its own, and stops when you leave.
 - **Mobile first**: design at 390px, then add `md:` and `lg:`. No sideways page scroll.
 - Tap targets **at least 44×44px**.
 
@@ -59,7 +59,7 @@ One page (`/`), sections stacked top to bottom, plus the classic CV at `/cv`.
 | Framework | **Next.js 16 (App Router) + TypeScript** | React is what most jobs ask for. Frontend and backend in one project. |
 | Styling | **Tailwind CSS v4** | Fast to work with, common in job listings |
 | Animation | CSS (and **Framer Motion** later, if needed) | Keep it subtle and professional |
-| Visuals | **Canvas** (Game of Life) | Learn to draw by hand |
+| Visuals | **Canvas** + raw pixels (`getImageData`) | Image processing by hand, like in my studies |
 | Tests | **Node's built-in test runner** (`npm test`) | No extra library; runs TypeScript directly |
 | Database/Auth | **Supabase** (Postgres, Auth, Storage) | Real SQL, free tier |
 | Email | **Resend** (free tier) | Contact form notifications |
@@ -73,7 +73,7 @@ One page (`/`), sections stacked top to bottom, plus the classic CV at `/cv`.
 
 1. **Contact form**. Saves to the database and emails me. Learn: API routes / Server Actions, validation (Zod), spam protection.
 2. **Admin panel** (`/admin`, only I can log in with Supabase Auth). Edit experience, hobbies and fun facts without touching code. Learn: CRUD, auth, protected routes.
-3. **Game of Life patterns gallery**. Visitors save a pattern they drew and share a link. Learn: writes, Row Level Security.
+3. **Vision lab, deep learning step**. Run a small pretrained model in the browser (e.g. object detection with ONNX Runtime Web or TensorFlow.js) on the camera feed. Learn: ML in the browser, performance.
 4. **Guestbook**. Sign in with GitHub and leave a message. Learn: OAuth.
 5. **Simple analytics**. Which sections people reach, clicks on "CV" and "Contact". Learn: events, aggregation queries.
 
@@ -85,7 +85,6 @@ education      (id, school, title, start_date, end_date, highlights[])
 hobbies        (id, icon, title, text, sort_order)
 fun_facts      (id, icon, text, sort_order)
 messages       (id, name, email, body, created_at)
-life_patterns  (id, name, cells, created_at)
 guestbook      (id, user_id, message, created_at)
 events         (id, name, section, created_at)
 ```
@@ -109,7 +108,8 @@ events         (id, name, section, created_at)
 - [x] About / hero with summary and buttons
 - [x] Experience carousel (swipe, arrows, dots, keyboard) + education & awards
 - [x] Off the clock: hobbies and fun facts
-- [x] Game of Life section, with tests for the rules
+- [x] ~~Game of Life section~~ → replaced by the vision lab
+- [x] Vision lab: filters, before/after slider, kernel + convolution diagram, photo upload, live camera, with tests
 - [x] Contact section (email, LinkedIn, GitHub)
 - [ ] Rewrite the draft texts in my own voice (`cv.summary`, `cv.hobbies`, `cv.funFacts`)
 - [ ] Add my photo (`public/me.jpg`, set `cv.photo`)
@@ -123,7 +123,7 @@ events         (id, name, section, created_at)
 
 ### Phase 4: Extras
 - [ ] Projects section with 2–3 write-ups (Problem → Constraints → Decisions → Result), maybe MDX
-- [ ] Game of Life: famous patterns menu, speed slider, save/share patterns
+- [ ] Vision lab: custom kernel editor (type your own 3×3), more filters (median, Canny), object detection with a small CNN
 - [ ] Guestbook with GitHub OAuth
 
 ### Phase 5: Polish
@@ -138,7 +138,7 @@ events         (id, name, section, created_at)
 ---
 
 ## 5. Principles
-- **Professional first, playful second.** The game is a bonus, never in the way.
+- **Professional first, playful second.** The vision lab is a bonus, never in the way.
 - **Ship ugly first, then make it beautiful.**
 - **Mobile first.** Design at 390px.
 - **Data separate from display** (`src/data/cv.ts`).
