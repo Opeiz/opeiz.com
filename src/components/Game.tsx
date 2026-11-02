@@ -22,7 +22,7 @@ export function Game({ squares }: { squares: Square[] }) {
   return (
     <div style={accentStyle(token.accent)}>
       {/* Who is playing */}
-      <div className="mx-auto mb-3 flex max-w-[640px] items-center justify-between gap-3 px-1.5">
+      <div className="mx-auto mb-3 flex max-w-[960px] items-center justify-between gap-3 px-1.5">
         <p className="flex items-center gap-2 text-sm">
           <Image src={token.sprites.front} alt="" width={32} height={32} className="h-8 w-8" />
           <span>

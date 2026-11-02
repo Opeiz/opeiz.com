@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="min-h-dvh px-4 pb-10 md:px-8">
       {/* Top bar. Recruiter rule: the classic CV is always one tap away */}
-      <header className="mx-auto flex max-w-[640px] items-center justify-between gap-3 py-4">
+      <header className="mx-auto flex max-w-[960px] items-center justify-between gap-3 py-4">
         <h1 className="text-lg font-bold md:text-2xl">
           <span aria-hidden="true">🎲 </span>Roll for the CV
         </h1>
