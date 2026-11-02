@@ -2,7 +2,7 @@
 
 My personal CV and portfolio, built as a **board game**: pick a token, roll the die, and move along the board to discover each part of my CV.
 
-Prefer the short version? A classic, printable CV lives at `/cv` (coming in Phase 1).
+Prefer the short version? A classic, printable CV lives at [`/cv`](https://opeiz-com.vercel.app/cv).
 
 ## Stack
 Next.js (App Router) + TypeScript · Tailwind CSS · Framer Motion · Supabase · Vercel
