@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- PLACEHOLDER: replace with a real 512x512 transparent image of this side -->
+  <defs>
+    <linearGradient id="metal" x1="0" x2="1">
+      <stop offset="0" stop-color="#6b7280"/><stop offset=".35" stop-color="#f3f4f6"/>
+      <stop offset=".6" stop-color="#d1d5db"/><stop offset="1" stop-color="#4b5563"/>
+    </linearGradient>
+    <radialGradient id="head" cx=".38" cy=".35" r=".7">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#cbd5e1"/><stop offset="1" stop-color="#475569"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="256" cy="462" rx="150" ry="20" fill="#000" opacity=".18"/>
+  <path d="M126 452 Q126 412 170 402 L342 402 Q386 412 386 452 Z" fill="url(#metal)"/>
+  <path d="M192 402 Q206 310 224 255 L288 255 Q306 310 320 402 Z" fill="url(#metal)"/>
+  <ellipse cx="256" cy="255" rx="72" ry="16" fill="url(#metal)"/>
+  <circle cx="256" cy="175" r="80" fill="url(#head)"/>
+  <ellipse cx="304" cy="175" rx="17" ry="30" fill="#10b981"/>
+  <text x="256" y="500" font-family="Arial" font-size="22" fill="#9ca3af" text-anchor="middle">placeholder · right</text>
+</svg>
