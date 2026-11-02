@@ -1,0 +1,2 @@
+# Store all text files with LF line endings (avoids Windows CRLF noise)
+* text=auto eol=lf
