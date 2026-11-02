@@ -78,7 +78,7 @@ card = bottom sheet   card = bottom sheet    card = side panel
 ```
 
 ### Rules
-- **3 squares per row on phone, 4–5 on PC.** Square positions are stored as row/column, and the code works out the zigzag from the screen width.
+- **3 squares per row on phone, 4 from tablet up.** Squares store only their **order** on the path. Row/column are calculated from the screen width with a serpentine formula (`src/lib/board-layout.ts`).
 - Path line drawn with **SVG + `viewBox`** so it scales to any width.
 - **Camera follows the token**: `scrollIntoView({ behavior: "smooth", block: "center" })`.
 
@@ -139,17 +139,20 @@ const isDesktop = useMediaQuery("(min-width: 1024px)");
 
 ### Board as data
 ```ts
-type SquareKind = "start" | "section" | "fact" | "ladder" | "puzzle" | "chance" | "finish";
+type SquareKind = "start" | "path" | "section" | "fact" | "ladder" | "puzzle" | "chance" | "finish";
 
 type Square = {
   id: number;           // order on the path
   kind: SquareKind;
-  sectionSlug?: string; // "about", "project-1"...
+  label?: string;       // short text on the square
+  icon?: string;        // emoji on the square
+  sectionSlug?: string; // "about", "experience"...
   text?: string;        // fun fact
   jumpTo?: number;      // ladders
-  row: number;
-  col: number;
 };
+
+// Position is calculated, not stored (see src/lib/board-layout.ts):
+// row = floor(id / cols); col = row is even ? id % cols : cols - 1 - id % cols
 ```
 
 ### The loaded die
@@ -211,7 +214,7 @@ events         (id, square_id, token, created_at)
 - [ ] ✅ **Something real to send to recruiters**
 
 ### Phase 2: The Board Game (3–4 weeks)
-- [ ] **2a.** Static vertical board from `squares` data, at **390px first**
+- [x] **2a.** Static vertical board from `squares` data, at **390px first**
 - [ ] **2a.** Token selection screen (4 tokens, 4-side sprite rotation)
 - [ ] **2b.** Die 3D animation and loaded roll
 - [ ] **2b.** Token moves square by square, camera follows
