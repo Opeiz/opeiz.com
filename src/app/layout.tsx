@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Roll for the CV · Opeiz",
-  description: "A personal CV and portfolio, played as a board game.",
+  title: "Joaquin Opazo Yentzen · Software Engineer",
+  description: "Software engineer in C++, Python, robotics and embedded systems, based in Chambéry, France.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

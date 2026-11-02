@@ -20,7 +20,7 @@ export default function CvPage() {
           href="/"
           className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium opacity-80 hover:bg-foreground/5 hover:opacity-100"
         >
-          ← Back to the game
+          ← Back to home
         </Link>
         {/* "&&" = only render the button if pdfUrl exists */}
         {cv.pdfUrl && (
