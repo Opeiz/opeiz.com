@@ -1,0 +1,212 @@
+// My CV as data. Written once, used everywhere:
+//   - the /cv page (Phase 1)
+//   - the board game cards (Phase 2)
+//   - later moved into Supabase (Phase 3)
+// Keeping DATA separate from DISPLAY means changing a job here updates every page.
+
+// ---------- Types: the "shape" of the data ----------
+
+/** A month in "YYYY-MM" format, e.g. "2025-07". */
+export type YearMonth = `${number}-${number}`;
+
+/** One block on the CV: a job, a degree, a project or an activity. */
+export type Entry = {
+  slug: string; // unique id, e.g. "iter-systems" (the board squares will use it)
+  title: string; // "Software Engineer"
+  org: string; // "ITER Systems"
+  location: string;
+  start: YearMonth;
+  end: YearMonth | null; // null = "Present"
+  highlights: string[]; // bullet points
+  tags?: string[]; // optional (the "?" means it can be missing)
+};
+
+export type SkillGroup = { name: string; items: string[] };
+
+export type CV = {
+  name: string;
+  role: string;
+  location: string;
+  email: string;
+  links: { label: string; href: string }[];
+  experience: Entry[];
+  education: Entry[];
+  projects: Entry[];
+  activities: Entry[];
+  skills: SkillGroup[];
+  languages: { name: string; level: string }[];
+  softSkills: string[];
+  hobbies: string[];
+};
+
+// ---------- The data ----------
+
+export const cv: CV = {
+  name: "Joaquin Opazo Yentzen",
+  role: "Software Engineer · Embedded Systems · Robotics",
+  location: "Chambéry, France",
+  email: "ja.opazoy@gmail.com",
+  links: [
+    { label: "GitHub", href: "https://github.com/Opeiz" },
+    // TODO: add LinkedIn → { label: "LinkedIn", href: "https://www.linkedin.com/in/..." },
+  ],
+
+  experience: [
+    {
+      slug: "iter-systems",
+      title: "C++ / Python Software & Automation Engineer",
+      org: "ITER Systems",
+      location: "La Motte-Servolex, France",
+      start: "2025-07",
+      end: null,
+      highlights: [
+        "Built the C++/Qt architecture for 2D/3D display and control communication of a 3-component software suite.",
+        "Set up the ROS architecture used to pilot uncrewed surface vessels.",
+        "Use AI agents and Claude Code daily to speed up development and optimize pipelines.",
+        "Automated testing and enterprise file parsing in Python to modernize 3 major software modules.",
+      ],
+      tags: ["C++", "Qt", "ROS", "Python"],
+    },
+    {
+      slug: "dassault-systemes",
+      title: "Software & API Integration Engineer",
+      org: "Dassault Systèmes",
+      location: "Vélizy-Villacoublay, France",
+      start: "2024-04",
+      end: "2024-10",
+      highlights: [
+        "Final-year internship: designed a new control panel in C++ and Python to automate HDR and 360° image generation.",
+        "Integrated AI agents and REST APIs to optimize visual workflows, fully automating the processing pipeline and cutting parallel computation time.",
+      ],
+      tags: ["C++", "Python", "REST API"],
+    },
+    {
+      slug: "cnrs-lab-sticc",
+      title: "R&D Engineer, Data Processing",
+      org: "CNRS, Lab-STICC",
+      location: "Brest, France",
+      start: "2023-04",
+      end: "2023-07",
+      highlights: [
+        "Research internship on satellite image interpolation to estimate sea surface height.",
+        "Wrote Python and PyTorch scripts on Linux to automate the evaluation of machine learning models (4DVarNet), making analysis 25% faster on real datasets.",
+      ],
+      tags: ["Python", "PyTorch", "Linux"],
+    },
+    {
+      slug: "utfsm-teaching",
+      title: "Teaching Assistant, Software Engineering & AI",
+      org: "UTFSM",
+      location: "Valparaíso, Chile",
+      start: "2019-08",
+      end: "2022-12",
+      highlights: [
+        "Taught and mentored students in software engineering and deep learning, supporting 75+ students per term.",
+        "Automated the grading of coding assignments and built algorithm visualization tools in Python and C++.",
+      ],
+      tags: ["Python", "C++", "Deep Learning"],
+    },
+    {
+      slug: "robomotic",
+      title: "Robotics Systems Integration Engineer",
+      org: "Robomotic SPA",
+      location: "Santiago, Chile",
+      start: "2020-11",
+      end: "2022-03",
+      highlights: [
+        "Designed, programmed and assembled control software for custom drones.",
+        "Automated flight tests, calibrated onboard sensors and handled the technical client relationship, reaching a 100% pass rate in hardware/software validation.",
+      ],
+      tags: ["Drones", "Embedded", "Testing"],
+    },
+  ],
+
+  education: [
+    {
+      slug: "imt-atlantique",
+      title: "Master's-level Engineering Degree (Diplôme d'Ingénieur)",
+      org: "IMT Atlantique",
+      location: "Brest, France",
+      start: "2022-07",
+      end: "2025-02",
+      highlights: [
+        "Double degree in computer engineering, specialized in software development and embedded systems.",
+        "Programming (Python, C++), software design and hardware/software integration.",
+      ],
+    },
+    {
+      slug: "utfsm",
+      title: "Telematics Engineering Degree",
+      org: "UTFSM",
+      location: "Valparaíso, Chile",
+      start: "2017-03",
+      end: "2025-02",
+      highlights: [
+        "Double degree focused on software development and embedded systems.",
+        "Image processing, computer vision, digital systems, OOP, databases and electronic design.",
+      ],
+    },
+  ],
+
+  projects: [
+    {
+      slug: "thales-risc-v",
+      title: "1st Prize, 4th Thales RISC-V Student Contest",
+      org: "Thales, CNRS",
+      location: "France",
+      start: "2023-09",
+      end: "2024-04",
+      highlights: [
+        "Optimized a handwritten digit recognition algorithm (MNIST) on a RISC-V platform.",
+        "Implemented it on a Zynq 7000 FPGA using hardware and software development tools.",
+      ],
+      tags: ["RISC-V", "FPGA", "Vivado", "Verilog", "Vitis", "Linux", "MNIST"],
+    },
+  ],
+
+  activities: [
+    {
+      slug: "bdi-president",
+      title: "President, International Students Office (BDI)",
+      org: "IMT Atlantique",
+      location: "Brest, France",
+      start: "2023-01",
+      end: "2024-01",
+      highlights: [
+        "Led a team of 6 volunteers helping ~100 international students settle in: ~6 events, group management and day-to-day support (arrival, paperwork, campus life).",
+      ],
+    },
+  ],
+
+  skills: [
+    { name: "Languages & Libraries", items: ["Python", "C++", "OOP", "Qt/QML", "VTK", "OpenCV"] },
+    { name: "DevOps", items: ["GitLab", "Linux", "Docker", "Kubernetes"] },
+    { name: "AI & Robotics", items: ["PyTorch", "TensorFlow", "ROS", "QGroundControl"] },
+    { name: "Tools", items: ["REST APIs", "Claude Code", "VS Code", "AI agents"] },
+  ],
+
+  languages: [
+    { name: "Spanish", level: "Native" },
+    { name: "English", level: "C1 (IELTS)" },
+    { name: "French", level: "C1 (DELF)" },
+  ],
+
+  softSkills: ["Strong team spirit", "Peer support and mentoring", "Complex problem solving", "Leadership"],
+
+  hobbies: ["Graphic design", "FPV drone racing", "Sailing skipper (French Sailing Federation)"],
+};
+
+// ---------- Helpers ----------
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "2025-07" → "Jul 2025" */
+export function formatMonth(value: YearMonth): string {
+  const [year, month] = value.split("-");
+  return `${MONTHS[Number(month) - 1]} ${year}`;
+}
+
+/** Entry dates → "Jul 2025 – Present" */
+export function formatRange(start: YearMonth, end: YearMonth | null): string {
+  return `${formatMonth(start)} – ${end ? formatMonth(end) : "Present"}`;
+}
