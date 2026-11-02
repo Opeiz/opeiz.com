@@ -16,26 +16,29 @@ It reflects who I am: **visual, puzzles, strategy, solutions, coding**. It's als
    - On the selection screen the tokens spin slowly or can be dragged to rotate. On the board, the token faces the direction it moves.
    - Assets: 4 tokens × 4 sides = 16 transparent PNG/WebP images, same size (e.g. 512×512), same lighting and same center point.
    - The token sets the accent color and a short line of text ("The Strategist", "The Builder"...).
-2. **The board**: a vertical zigzag path. The token starts on **START**.
+2. **The board**: a **loop around a square board, shown as an isometric diamond** (classic board-game layout, with my own squares and look). The token starts on **START**, the front corner.
 3. **Roll the die**: a 3D animation. The roll is **loaded**: it always gives the number of squares to the next section.
 4. **The token moves square by square**, with a small hop and a sound that can be muted.
 5. **It lands on a section square** and a card opens (About, Experience, Project, Skills...).
 6. When the card closes, the visitor rolls again. The last square is **FINISH: "You win, let's talk"**, which shows the contact form.
 
-### Board layout (example)
+### Board layout
+A loop of `4 × (n − 1)` squares around an n×n grid (20 squares → 6×6). The middle is empty: the die lives there.
 ```
-[START] → [ ] → [ABOUT]
-                   ↓
-[EXP] ← [fact] ← [ ]
-  ↓
-[ ] → [PROJ 1] → [ ]
-                   ↓
-[SKILLS] ← [fact] ← [ ]
-  ↓
-[ ] → [PROJ 2] → [LAB 🧩]
-                   ↓
-            [FINISH: CONTACT]
+ flat grid                          on screen: rotateX(60°) rotateZ(45°)
+ ┌────┬────┬────┬────┬────┬────┐                  ◇ PROJECTS (back)
+ │PROJ│    │fact│SKIL│    │ACTV│               ◇     ◇
+ ├────┼────┴────┴────┴────┼────┤            ◇    🎲     ◇
+ │fact│                   │fact│      EXP ◇   (center)    ◇ ACTIVITIES
+ │EDUC│      center       │    │            ◇           ◇
+ │    │      (die)        │    │               ◇     ◇
+ │fact│                   │FIN │                  ◇ START (front)
+ ├────┼────┬────┬────┬────┼────┤
+ │EXP │    │fact│ABOU│    │STRT│ ← START, then the path goes left and around
+ └────┴────┴────┴────┴────┴────┘   FINISH is the last square before START
 ```
+- Corners (ids 0, 5, 10, 15): START, Experience, Projects, Activities.
+- Icons and the token **stand upright** on the tilted board ("billboarding").
 
 ### Square types
 | Type | What it does |
@@ -62,48 +65,48 @@ It reflects who I am: **visual, puzzles, strategy, solutions, coding**. It's als
 
 ---
 
-## 2. Responsive design: mobile-first, vertical everywhere
+## 2. Responsive design: mobile-first, isometric diamond everywhere
 
-The same vertical board on every screen. On PC it just gets more space around it.
+The same diamond board on every screen. The diamond is 2:1 (wide and short), so phones need a camera that zooms in.
 
 ```
-PHONE (≈390px)        TABLET (≈768px)        PC (≥1024px)
-┌──────────┐          ┌───────────────┐      ┌──────┬──────────┬──────────┐
-│ ☰  token │          │ ☰  token  CV→ │      │ Mini │  BOARD   │ Section  │
-│  BOARD   │          │    BOARD      │      │ map  │ (vertical│ card     │
-│ (zigzag) │          │ (wider zigzag)│      │ Token│   path)  │ (side    │
-│ [ 🎲 ]   │          │   [ 🎲 ]      │      │ info │  [ 🎲 ]  │  panel)  │
-└──────────┘          └───────────────┘      └──────┴──────────┴──────────┘
-card = bottom sheet   card = bottom sheet    card = side panel
+PHONE (≈390px)            TABLET (≈768px)           PC (≥1024px)
+┌──────────────┐          ┌────────────────┐        ┌──────────────────────┬─────────┐
+│ 🎲 Title  CV→│          │ 🎲 Title    CV→│        │ 🎲 Title         CV→ │         │
+│   ◇  ◇  ◇    │          │     ◇    ◇     │        │       ◇     ◇        │ Section │
+│ (zoomed in,  │          │  ◇  DIAMOND  ◇ │        │   ◇   DIAMOND    ◇   │ card    │
+│ camera on    │          │     ◇    ◇     │        │       ◇     ◇        │ (side   │
+│ the token)   │          │                │        │  mini-map · progress │  panel) │
+│ [card sheet] │          │ [card sheet]   │        │                      │         │
+└──────────────┘          └────────────────┘        └──────────────────────┴─────────┘
+card = bottom sheet       card = bottom sheet       card = side panel
 ```
 
 ### Rules
-- **3 squares per row on phone, 4 from tablet up.** Squares store only their **order** on the path. Row/column are calculated from the screen width with a serpentine formula (`src/lib/board-layout.ts`).
-- Path line drawn with **SVG + `viewBox`** so it scales to any width.
-- **Camera follows the token**: `scrollIntoView({ behavior: "smooth", block: "center" })`.
+- Squares store only their **order** on the loop. Row/column come from `perimeterCell()`, and screen position from `isoPosition()` (`src/lib/board-layout.ts`).
+- The board plane has **no padding or gap**: every cell must be exactly 1/n of the board, or `isoPosition()` drifts. Spacing lives inside each cell.
+- **Camera follows the token** (2b): on phones, zoom the board in (about 2×) and pan so the token stays centered.
 
 ### Phone
 - Die **fixed at the bottom** in the thumb zone, with `padding-bottom: env(safe-area-inset-bottom)`.
 - Cards open as a **bottom sheet** (swipe down to close, about 85% of the height).
-- Tap targets **at least 44×44px**. Fact squares open on tap (phones have no hover).
+- Tap targets **at least 44×44px**. Fully zoomed out, a tile is only about 60×30px, so tapping squares needs the zoomed camera (or the mini-map). Fact squares open on tap (phones have no hover).
 - Use `100dvh` instead of `100vh`.
 - `navigator.vibrate(30)` on the roll (works on Android).
 
 ### PC
-- Board column `max-width: ~640px`, centered.
+- Board `max-width: ~960px` (diamond is 960×480), centered.
 - Left column: mini-map, token, progress ("4/8 sections").
 - Right column: section card as a side panel, so the board stays visible.
 - Hover tooltips on fact squares.
 
 ### Tailwind pattern
 ```tsx
-<div className="grid grid-cols-1 lg:grid-cols-[220px_minmax(0,640px)_1fr] gap-6">
-  <aside className="hidden lg:block">{/* mini-map + token */}</aside>
-  <main>{/* vertical Board */}</main>
+<div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6">
+  <main>{/* diamond Board, die in its center; mini-map + progress below on PC */}</main>
   <aside className="hidden lg:block">{/* side card on PC */}</aside>
 </div>
 
-<DiceButton className="fixed bottom-4 inset-x-0 mx-auto lg:sticky lg:bottom-8" />
 <BottomSheet className="lg:hidden" />
 ```
 ```ts
@@ -214,7 +217,8 @@ events         (id, square_id, token, created_at)
 - [ ] ✅ **Something real to send to recruiters**
 
 ### Phase 2: The Board Game (3–4 weeks)
-- [x] **2a.** Static vertical board from `squares` data, at **390px first**
+- [x] **2a.** Static vertical board from `squares` data, at **390px first** (replaced by the diamond below)
+- [x] **2a.** Isometric diamond loop board (CSS 3D, upright icons and token)
 - [x] **2a.** Token selection screen (4 tokens, 4-side sprite rotation)
 - [ ] **2a.** Replace the 16 placeholder token images in `public/tokens/` with real art
 - [ ] **2b.** Die 3D animation and loaded roll

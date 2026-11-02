@@ -12,7 +12,7 @@ Next.js (App Router) + TypeScript, Tailwind CSS, Framer Motion, Supabase, Vercel
 
 ## Rules
 - **Mobile-first**: design at 390px first, then add `md:` and `lg:` styles.
-- The board is **vertical on every screen size**.
+- The board is an **isometric diamond loop on every screen size** (see PLAN.md §1–2). Keep `isoPosition()` exact: no padding/gap on the board plane.
 - Always keep the "Skip the game → Classic CV" path working.
 - Respect `prefers-reduced-motion` and keyboard navigation.
 - Work phase by phase from the roadmap in `PLAN.md`, and tick the checkboxes as tasks get done.
