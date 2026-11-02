@@ -29,6 +29,7 @@ export type CV = {
   location: string;
   email: string;
   links: { label: string; href: string }[];
+  pdfUrl?: string; // file in /public; the "Download PDF" button only shows when this is set
   experience: Entry[];
   education: Entry[];
   projects: Entry[];
@@ -48,8 +49,10 @@ export const cv: CV = {
   email: "ja.opazoy@gmail.com",
   links: [
     { label: "GitHub", href: "https://github.com/Opeiz" },
-    // TODO: add LinkedIn → { label: "LinkedIn", href: "https://www.linkedin.com/in/..." },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/joaquin-opazo-yentzen/" },
   ],
+  // TODO: when the English PDF is ready, put it in public/cv/ and uncomment:
+  // pdfUrl: "/cv/joaquin-opazo-cv-en.pdf",
 
   experience: [
     {
