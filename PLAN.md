@@ -206,7 +206,7 @@ events         (id, square_id, token, created_at)
 - [x] Deploy "Hello World" to Vercel (https://opeiz-com.vercel.app)
 
 ### Phase 1: Classic CV first (1–2 weeks)
-- [ ] `/cv` page with hardcoded content, responsive, printable
+- [x] `/cv` page with hardcoded content, responsive, printable
 - [ ] PDF download
 - [ ] ✅ **Something real to send to recruiters**
 
