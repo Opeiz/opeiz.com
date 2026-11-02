@@ -36,7 +36,7 @@ export default function CvPage() {
 
       {/* Header */}
       <header className="mb-8 border-b border-foreground/15 pb-6">
-        <h1 className="text-3xl font-bold tracking-tight md:text-5xl">{cv.name}</h1>
+        <h1 className="font-display text-4xl tracking-tight md:text-6xl">{cv.name}</h1>
         <p className="mt-2 text-lg text-accent md:text-xl">{cv.role}</p>
         <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
           <li>{cv.location}</li>
