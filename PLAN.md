@@ -215,7 +215,8 @@ events         (id, square_id, token, created_at)
 
 ### Phase 2: The Board Game (3–4 weeks)
 - [x] **2a.** Static vertical board from `squares` data, at **390px first**
-- [ ] **2a.** Token selection screen (4 tokens, 4-side sprite rotation)
+- [x] **2a.** Token selection screen (4 tokens, 4-side sprite rotation)
+- [ ] **2a.** Replace the 16 placeholder token images in `public/tokens/` with real art
 - [ ] **2b.** Die 3D animation and loaded roll
 - [ ] **2b.** Token moves square by square, camera follows
 - [ ] **2c.** Section cards (bottom sheet on phone) and fun fact squares
