@@ -11,7 +11,10 @@ It reflects who I am: **visual, puzzles, strategy, solutions, coding**. It's als
 ## 1. Concept
 
 ### Visitor flow
-1. **Choose your token**: 4–6 options (♟ pawn, 🧩 puzzle piece, ⚙️ gear, 🎲 die, 💡 bulb, 🐙 octopus).
+1. **Choose your token**: 4 silver game-piece tokens, each one a **different version of me** (original designs).
+   - Each token has **4 side images** (front, right, back, left). Showing the right image for the current angle makes it look like a 3D model (the "sprite" trick from classic games).
+   - On the selection screen the tokens spin slowly or can be dragged to rotate. On the board, the token faces the direction it moves.
+   - Assets: 4 tokens × 4 sides = 16 transparent PNG/WebP images, same size (e.g. 512×512), same lighting and same center point.
    - The token sets the accent color and a short line of text ("The Strategist", "The Builder"...).
 2. **The board**: a vertical zigzag path. The token starts on **START**.
 3. **Roll the die**: a 3D animation. The roll is **loaded**: it always gives the number of squares to the next section.
@@ -209,7 +212,7 @@ events         (id, square_id, token, created_at)
 
 ### Phase 2: The Board Game (3–4 weeks)
 - [ ] **2a.** Static vertical board from `squares` data, at **390px first**
-- [ ] **2a.** Token selection screen
+- [ ] **2a.** Token selection screen (4 tokens, 4-side sprite rotation)
 - [ ] **2b.** Die 3D animation and loaded roll
 - [ ] **2b.** Token moves square by square, camera follows
 - [ ] **2c.** Section cards (bottom sheet on phone) and fun fact squares
