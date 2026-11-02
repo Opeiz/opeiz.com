@@ -89,7 +89,7 @@ export default function CvPage() {
           </SideSection>
 
           <SideSection title="Hobbies">
-            <SimpleList items={cv.hobbies} />
+            <SimpleList items={cv.hobbies.map((h) => h.title ?? h.text)} />
           </SideSection>
         </aside>
       </div>

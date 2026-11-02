@@ -23,9 +23,15 @@ export type Entry = {
 
 export type SkillGroup = { name: string; items: string[] };
 
+/** Something with an emoji and a sentence: hobbies, fun facts... */
+export type IconItem = { icon: string; title?: string; text: string };
+
 export type CV = {
   name: string;
+  firstName: string;
   role: string;
+  summary: string[]; // short paragraphs for the "About" section
+  photo?: string; // file in /public, e.g. "/me.jpg"; initials are shown until it's set
   location: string;
   email: string;
   links: { label: string; href: string }[];
@@ -37,14 +43,23 @@ export type CV = {
   skills: SkillGroup[];
   languages: { name: string; level: string }[];
   softSkills: string[];
-  hobbies: string[];
+  hobbies: IconItem[];
+  funFacts: IconItem[];
 };
 
 // ---------- The data ----------
 
 export const cv: CV = {
   name: "Joaquin Opazo Yentzen",
+  firstName: "Joaquin",
   role: "Software Engineer · Embedded Systems · Robotics",
+  // DRAFT written from my CV: rewrite in my own voice
+  summary: [
+    "I'm a software engineer working where code meets hardware: C++/Qt applications, robotics with ROS, and Python automation.",
+    "Today I'm at ITER Systems near Chambéry, building the software that displays, controls and pilots uncrewed surface vessels. Before that: Dassault Systèmes, CNRS research, and drones in Chile.",
+    "I like turning messy, manual work into clean, automated systems, and I use AI agents every day to get there faster.",
+  ],
+  // photo: "/me.jpg", // TODO: add a square photo to /public and uncomment
   location: "Chambéry, France",
   email: "ja.opazoy@gmail.com",
   links: [
@@ -196,7 +211,21 @@ export const cv: CV = {
 
   softSkills: ["Strong team spirit", "Peer support and mentoring", "Complex problem solving", "Leadership"],
 
-  hobbies: ["Graphic design", "FPV drone racing", "Sailing skipper (French Sailing Federation)"],
+  hobbies: [
+    // DRAFT: make these sound like me
+    { icon: "🚁", title: "FPV drone racing", text: "Racing small drones in first-person view, through goggles." },
+    { icon: "⛵", title: "Sailing", text: "Skipper with the French Sailing Federation." },
+    { icon: "🎨", title: "Graphic design", text: "My creative side, away from the code." },
+  ],
+
+  // DRAFT: add my own geeky ones ("Favorite algorithm: ...", "Coffees per day: ...")
+  funFacts: [
+    { icon: "🌎", text: "From Valparaíso, Chile to the French Alps." },
+    { icon: "🗣️", text: "Spanish is my first language. English and French: C1." },
+    { icon: "🎓", text: "Two engineering degrees at once: one in Chile, one in France." },
+    { icon: "🏆", text: "Won 1st prize at the Thales RISC-V student contest with an FPGA." },
+    { icon: "🤝", text: "Led 6 volunteers welcoming ~100 international students in Brest." },
+  ],
 };
 
 // ---------- Helpers ----------
