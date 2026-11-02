@@ -197,10 +197,10 @@ events         (id, square_id, token, created_at)
 ## 6. Roadmap (each phase ends with something online)
 
 ### Phase 0: Basics (1 week)
-- [ ] Git and GitHub basics, create the repo
+- [x] Git and GitHub basics, create the repo
 - [ ] HTML/CSS/JS refresher, TypeScript intro
 - [x] `npx create-next-app@latest` with TypeScript, Tailwind and App Router
-- [ ] Deploy "Hello World" to Vercel
+- [x] Deploy "Hello World" to Vercel (https://opeiz-com.vercel.app)
 
 ### Phase 1: Classic CV first (1–2 weeks)
 - [ ] `/cv` page with hardcoded content, responsive, printable
