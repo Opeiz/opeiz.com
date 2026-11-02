@@ -76,7 +76,9 @@ export function TokenSpinner({ token, className = "" }: { token: Token; classNam
           fill
           sizes="(min-width: 768px) 288px, 224px"
           draggable={false}
-          preload={s === "front"} // Next.js 16: "preload" replaces the old "priority"
+          // The big token is the LCP (largest thing on screen at load), and all 4 sides are
+          // needed within a second, so load them now instead of lazily.
+          loading="eager"
           className={`pointer-events-none object-contain drop-shadow-xl ${s === side ? "opacity-100" : "opacity-0"}`}
         />
       ))}
