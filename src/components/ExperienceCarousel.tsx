@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { formatRange, type Entry } from "@/data/cv";
 
@@ -44,7 +45,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
   }
 
   const arrow =
-    "inline-flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 text-lg hover:bg-foreground/5 disabled:opacity-30";
+    "inline-flex size-11 items-center justify-center rounded-full border border-border bg-surface transition hover:border-foreground/30 disabled:opacity-30 disabled:hover:border-border";
 
   return (
     <div
@@ -62,7 +63,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
         tabIndex={0}
         aria-label="Experience cards. Use the arrow keys to move between them."
         // "relative" makes card.offsetLeft measured from the track itself
-        className="relative flex snap-x snap-mandatory gap-4 overflow-x-auto rounded-2xl pb-2 outline-none [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-scrollbar]:hidden"
+        className="relative flex snap-x snap-mandatory gap-4 overflow-x-auto rounded-3xl pb-2 outline-none [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-scrollbar]:hidden"
       >
         {entries.map((entry, i) => (
           <article
@@ -70,29 +71,29 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
             role="group"
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${entries.length}: ${entry.org}`}
-            className="w-[88%] shrink-0 snap-start rounded-2xl border border-foreground/10 bg-foreground/[0.03] p-5 md:w-full md:p-8"
+            className="w-[88%] shrink-0 snap-start rounded-3xl border border-border bg-surface p-6 shadow-sm md:w-full md:p-10"
           >
-            <div className="flex flex-wrap items-center gap-2 text-sm opacity-70">
+            <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
               <span>{formatRange(entry.start, entry.end)}</span>
               {entry.end === null && (
-                <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-semibold text-accent opacity-100">
+                <span className="rounded-full bg-accent-soft px-2 py-0.5 font-semibold text-accent">
                   Current
                 </span>
               )}
             </div>
-            <h3 className="mt-2 text-xl font-semibold leading-snug md:text-2xl">{entry.title}</h3>
-            <p className="mt-1 text-accent">
-              {entry.org} <span className="opacity-60">· {entry.location}</span>
+            <h3 className="mt-4 font-display text-2xl leading-tight md:text-4xl">{entry.title}</h3>
+            <p className="mt-2 font-medium text-accent">
+              {entry.org} <span className="font-normal text-muted">· {entry.location}</span>
             </p>
-            <ul className="mt-4 list-disc space-y-2 pl-5 leading-relaxed">
+            <ul className="mt-6 list-disc space-y-2 pl-5 leading-relaxed marker:text-accent">
               {entry.highlights.map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
             {entry.tags && (
-              <ul className="mt-5 flex flex-wrap gap-1.5">
+              <ul className="mt-6 flex flex-wrap gap-1.5">
                 {entry.tags.map((tag) => (
-                  <li key={tag} className="rounded-md border border-foreground/15 px-2 py-0.5 text-xs">
+                  <li key={tag} className="rounded-full border border-border bg-background px-2.5 py-0.5 font-mono text-xs text-muted">
                     {tag}
                   </li>
                 ))}
@@ -105,7 +106,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
       {/* Controls */}
       <div className="mt-4 flex items-center justify-between gap-4">
         <button type="button" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Previous job" className={arrow}>
-          ←
+          <ArrowLeft className="size-5" strokeWidth={1.8} aria-hidden="true" />
         </button>
 
         <div className="flex items-center gap-1">
@@ -119,13 +120,13 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
               // 44px tap area, small visible dot inside
               className="flex h-11 w-7 items-center justify-center"
             >
-              <span className={`h-2 rounded-full transition-all ${i === index ? "w-5 bg-accent" : "w-2 bg-foreground/25"}`} />
+              <span className={`h-2 rounded-full transition-all ${i === index ? "w-6 bg-accent" : "w-2 bg-muted/35"}`} />
             </button>
           ))}
         </div>
 
         <button type="button" onClick={() => goTo(index + 1)} disabled={index === last} aria-label="Next job" className={arrow}>
-          →
+          <ArrowRight className="size-5" strokeWidth={1.8} aria-hidden="true" />
         </button>
       </div>
 

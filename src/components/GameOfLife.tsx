@@ -1,5 +1,6 @@
 "use client";
 
+import { Eraser, Pause, Play, Shuffle, StepForward } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { countAlive, emptyGrid, nextGeneration, PATTERNS, randomGrid, stamp, type Grid } from "@/lib/life";
 
@@ -104,16 +105,19 @@ export function GameOfLife() {
     draw();
   }
 
-  const button =
-    "inline-flex min-h-11 items-center justify-center rounded-lg border border-foreground/15 px-4 text-sm font-medium hover:bg-foreground/5 disabled:opacity-40";
+  // Base shape without colors, then 2 color versions. Never put two conflicting classes
+  // (like bg-surface AND bg-accent) on one element: the winner depends on CSS file order.
+  const base = "inline-flex min-h-11 items-center justify-center gap-2 rounded-full border px-4 text-sm transition";
+  const button = `${base} border-border bg-surface font-medium hover:border-foreground/30 disabled:opacity-40 disabled:hover:border-border`;
+  const primary = `${base} min-w-28 border-accent bg-accent font-semibold text-on-accent hover:opacity-90`;
 
   return (
-    <div>
+    <div className="rounded-3xl border border-border bg-surface p-3 shadow-sm md:p-4">
       <canvas
         ref={canvasRef}
         role="img"
         aria-label={`Game of Life grid, generation ${generation}, ${alive} cells alive. Use the buttons below to play.`}
-        className="block aspect-[36/22] w-full cursor-crosshair touch-none rounded-xl border border-foreground/10"
+        className="block aspect-[36/22] w-full cursor-crosshair touch-none rounded-2xl bg-background"
         onPointerDown={(e) => {
           e.currentTarget.setPointerCapture(e.pointerId);
           const index = cellIndexAt(e);
@@ -125,19 +129,22 @@ export function GameOfLife() {
         onPointerCancel={() => (paintValue.current = null)}
       />
 
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-2 md:mt-4">
         <button
           type="button"
           aria-pressed={running}
           onClick={() => setRunning((r) => !r)}
-          className={`${button} min-w-24 border-accent bg-accent font-semibold text-white hover:bg-accent hover:opacity-90`}
+          className={primary}
         >
+          {running ? <Pause className="size-4" aria-hidden="true" /> : <Play className="size-4" aria-hidden="true" />}
           {running ? "Pause" : "Play"}
         </button>
         <button type="button" onClick={step} disabled={running} className={button}>
+          <StepForward className="size-4" strokeWidth={1.8} aria-hidden="true" />
           Step
         </button>
         <button type="button" onClick={() => update(randomGrid(COLS, ROWS), () => 0)} className={button}>
+          <Shuffle className="size-4" strokeWidth={1.8} aria-hidden="true" />
           Random
         </button>
         <button
@@ -148,9 +155,10 @@ export function GameOfLife() {
           }}
           className={button}
         >
+          <Eraser className="size-4" strokeWidth={1.8} aria-hidden="true" />
           Clear
         </button>
-        <p className="ml-auto text-sm tabular-nums opacity-70" aria-live="off">
+        <p className="ml-auto pr-1 font-mono text-xs text-muted tabular-nums" aria-live="off">
           Gen {generation} · {alive} alive
         </p>
       </div>
