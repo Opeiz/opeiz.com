@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# private: CV PDF with phone number (not for the public repo)
+/public/cv/joaquin-opazo-cv-fr.pdf

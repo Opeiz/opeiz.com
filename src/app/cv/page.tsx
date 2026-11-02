@@ -11,9 +11,6 @@ export const metadata: Metadata = {
   description: cv.role,
 };
 
-// The original PDF lives in /public, so it is served at this URL.
-const PDF_URL = "/cv/joaquin-opazo-cv-fr.pdf";
-
 export default function CvPage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6 md:px-8 md:py-10 print:max-w-none print:p-0">
@@ -25,13 +22,16 @@ export default function CvPage() {
         >
           ← Back to the game
         </Link>
-        <a
-          href={PDF_URL}
-          download
-          className="inline-flex min-h-11 items-center rounded-lg bg-foreground px-4 text-sm font-semibold text-background hover:opacity-90"
-        >
-          Download PDF (FR)
-        </a>
+        {/* "&&" = only render the button if pdfUrl exists */}
+        {cv.pdfUrl && (
+          <a
+            href={cv.pdfUrl}
+            download
+            className="inline-flex min-h-11 items-center rounded-lg bg-foreground px-4 text-sm font-semibold text-background hover:opacity-90"
+          >
+            Download PDF
+          </a>
+        )}
       </nav>
 
       {/* Header */}
