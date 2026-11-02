@@ -170,8 +170,7 @@ export const FILTERS: Filter[] = [
       [-1, 1, 1],
       [0, 1, 2],
     ],
-    kernelNote: "+ 128",
-    explain: "A diagonal difference plus a gray offset: surfaces look lit from one side, like a relief.",
+    explain: "Bright on one diagonal side, dark on the other: surfaces look lit from one corner, like a relief. The weights add up to 1, so overall brightness stays the same.",
   },
   {
     id: "threshold",
@@ -201,7 +200,7 @@ export function applyFilter(src: Img, id: FilterId, level = 128): Img {
     case "edges":
       return sobel(src);
     case "emboss":
-      return convolve(grayscale(src), kernelOf("emboss"), 1, 128);
+      return convolve(grayscale(src), kernelOf("emboss"));
     case "threshold":
       return threshold(src, level);
   }
