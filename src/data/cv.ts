@@ -23,8 +23,11 @@ export type Entry = {
 
 export type SkillGroup = { name: string; items: string[] };
 
-/** Something with an emoji and a sentence: hobbies, fun facts... */
-export type IconItem = { icon: string; title?: string; text: string };
+/** Icon names (the drawings live in src/components/Icon.tsx, data stays free of React). */
+export type IconName = "drone" | "sailboat" | "palette" | "globe" | "languages" | "graduation" | "trophy" | "users" | "cpu";
+
+/** Something with an icon and a sentence: hobbies, fun facts... */
+export type IconItem = { icon: IconName; title?: string; text: string };
 
 export type CV = {
   name: string;
@@ -213,18 +216,18 @@ export const cv: CV = {
 
   hobbies: [
     // DRAFT: make these sound like me
-    { icon: "🚁", title: "FPV drone racing", text: "Racing small drones in first-person view, through goggles." },
-    { icon: "⛵", title: "Sailing", text: "Skipper with the French Sailing Federation." },
-    { icon: "🎨", title: "Graphic design", text: "My creative side, away from the code." },
+    { icon: "drone", title: "FPV drone racing", text: "Racing small drones in first-person view, through goggles." },
+    { icon: "sailboat", title: "Sailing", text: "Skipper with the French Sailing Federation." },
+    { icon: "palette", title: "Graphic design", text: "My creative side, away from the code." },
   ],
 
   // DRAFT: add my own geeky ones ("Favorite algorithm: ...", "Coffees per day: ...")
   funFacts: [
-    { icon: "🌎", text: "From Valparaíso, Chile to the French Alps." },
-    { icon: "🗣️", text: "Spanish is my first language. English and French: C1." },
-    { icon: "🎓", text: "Two engineering degrees at once: one in Chile, one in France." },
-    { icon: "🏆", text: "Won 1st prize at the Thales RISC-V student contest with an FPGA." },
-    { icon: "🤝", text: "Led 6 volunteers welcoming ~100 international students in Brest." },
+    { icon: "globe", text: "From Valparaíso, Chile to the French Alps." },
+    { icon: "languages", text: "Spanish is my first language. English and French: C1." },
+    { icon: "graduation", text: "Two engineering degrees at once: one in Chile, one in France." },
+    { icon: "trophy", text: "Won 1st prize at the Thales RISC-V student contest with an FPGA." },
+    { icon: "users", text: "Led 6 volunteers welcoming ~100 international students in Brest." },
   ],
 };
 
