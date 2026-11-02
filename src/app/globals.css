@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
-/* Design tokens: change a color here and the whole site follows. */
+/* ============================================================
+   Design tokens: every color has a name. Change it here and the
+   whole site follows. Light = warm paper, dark = deep ink.
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --accent: #4f46e5; /* indigo, like the blue in my PDF CV */
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent); /* enables text-accent, bg-accent... */
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --background: #f6f4ef; /* paper */
+  --surface: #fffdf9; /* cards, slightly lighter than the page */
+  --foreground: #17171a; /* ink */
+  --muted: #5f5e5a; /* secondary text (6:1 contrast on paper) */
+  --border: #e2ded4;
+  --accent: #c4410c; /* signal orange, dark enough for small text (≥4.5:1) */
+  --on-accent: #ffffff; /* text on top of accent buttons */
+  --accent-soft: #fbe6da; /* badges, highlights */
+  --grid-dot: rgb(23 23 26 / 0.09); /* the dotted "engineering paper" */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --accent: #a5b4fc;
+    --background: #0e1116;
+    --surface: #151a21;
+    --foreground: #ece9e2;
+    --muted: #9b9a94;
+    --border: #262c35;
+    --accent: #ff7a45; /* brighter orange reads well on dark */
+    --on-accent: #0e1116; /* white on bright orange is too weak, so use ink */
+    --accent-soft: #33201a;
+    --grid-dot: rgb(236 233 226 / 0.07);
   }
+}
+
+/* Make the tokens usable as Tailwind classes: bg-surface, text-muted, border-border... */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-instrument-serif); /* enables the font-display class */
+}
+
+/* Dotted grid background (like engineering paper). Fades out toward the bottom. */
+@utility bg-dots {
+  background-image: radial-gradient(var(--grid-dot) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(to bottom, black 40%, transparent);
 }
 
 /* Menu links glide to their section, unless the visitor asked for less motion */
@@ -36,6 +66,11 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
 /* Printing (Ctrl+P → "Save as PDF"): A4 paper, always light colors. */
 @page {
   size: A4;
@@ -45,8 +80,11 @@ body {
 @media print {
   :root {
     --background: #ffffff;
+    --surface: #ffffff;
     --foreground: #111111;
-    --accent: #3730a3;
+    --muted: #444444;
+    --border: #dddddd;
+    --accent: #9a3412;
   }
   body {
     font-size: 11pt;
