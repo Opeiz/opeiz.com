@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Board } from "@/components/Board";
+import { Game } from "@/components/Game";
 import { squares } from "@/data/board";
 
 // The home page ("/"): the game.
-// Server Component; only <Board> runs in the browser ("use client" inside it).
+// Server Component; only <Game> runs in the browser ("use client" inside it).
 export default function Home() {
   return (
     <div className="min-h-dvh px-4 pb-10 md:px-8">
@@ -21,7 +21,7 @@ export default function Home() {
       </header>
 
       <main>
-        <Board squares={squares} />
+        <Game squares={squares} />
       </main>
     </div>
   );

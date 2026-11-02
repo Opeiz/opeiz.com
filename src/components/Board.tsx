@@ -1,6 +1,8 @@
 "use client"; // runs in the browser: it needs the screen width
 
+import Image from "next/image";
 import type { Square } from "@/data/board";
+import type { Token } from "@/data/tokens";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { cellFor, pathPoints, rowCount } from "@/lib/board-layout";
 
@@ -9,7 +11,13 @@ import { cellFor, pathPoints, rowCount } from "@/lib/board-layout";
  * Layer 1: an SVG line through the center of every square.
  * Layer 2: the squares, placed on a CSS grid (no gap, so cell centers match the SVG).
  */
-export function Board({ squares }: { squares: Square[] }) {
+type BoardProps = {
+  squares: Square[];
+  token?: Token; // optional: the board can also be shown without a player
+  position?: number; // which square the token is on
+};
+
+export function Board({ squares, token, position = 0 }: BoardProps) {
   const isWide = useMediaQuery("(min-width: 768px)");
   const cols = isWide ? 4 : 3; // mobile-first: 3 columns, 4 from tablet up
   const rows = rowCount(squares.length, cols);
@@ -47,10 +55,19 @@ export function Board({ squares }: { squares: Square[] }) {
           return (
             <li
               key={square.id}
-              className="aspect-square p-1.5 md:p-2"
+              className="relative aspect-square p-1.5 md:p-2"
               style={{ gridRow: row + 1, gridColumn: col + 1 }}
             >
               <SquareTile square={square} />
+              {token && square.id === position && (
+                <Image
+                  src={token.sprites.front}
+                  alt={`${token.name} is here`}
+                  width={96}
+                  height={96}
+                  className="pointer-events-none absolute -top-3 right-0 h-3/5 w-3/5 object-contain drop-shadow-lg"
+                />
+              )}
             </li>
           );
         })}
