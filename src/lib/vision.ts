@@ -119,64 +119,38 @@ export function sobel(src: Img): Img {
 
 export type FilterId = "original" | "grayscale" | "blur" | "sharpen" | "edges" | "emboss" | "threshold";
 
-export type Filter = {
-  id: FilterId;
-  label: string;
-  kernel?: Kernel; // shown in the diagram
-  kernelNote?: string; // e.g. "÷ 16"
-  explain: string;
-};
+/** A filter on the site. Its name and explanation live in src/i18n/dictionaries.ts (3 languages). */
+export type Filter = { id: FilterId; kernel?: Kernel };
 
 export const FILTERS: Filter[] = [
-  { id: "original", label: "Original", explain: "What the camera captures: a grid of red, green and blue numbers from 0 to 255." },
-  {
-    id: "grayscale",
-    label: "Grayscale",
-    explain: "Brightness = 0.299·R + 0.587·G + 0.114·B. Green weighs most because our eyes are most sensitive to it. Most vision algorithms start here.",
-  },
+  { id: "original" },
+  { id: "grayscale" },
   {
     id: "blur",
-    label: "Gaussian blur",
     kernel: [
       [1, 2, 1],
       [2, 4, 2],
       [1, 2, 1],
     ],
-    kernelNote: "÷ 16",
-    explain: "Each pixel becomes a weighted average of its neighbours. It removes noise before detecting edges.",
   },
   {
     id: "sharpen",
-    label: "Sharpen",
     kernel: [
       [0, -1, 0],
       [-1, 5, -1],
       [0, -1, 0],
     ],
-    explain: "Boost the center, subtract the neighbours: differences get bigger, so details pop.",
   },
-  {
-    id: "edges",
-    label: "Edges (Sobel)",
-    kernel: SOBEL_X,
-    kernelNote: "+ its vertical twin",
-    explain: "Measures how fast brightness changes. Edges are the first step for lane detection, robots finding objects, or reading text.",
-  },
+  { id: "edges", kernel: SOBEL_X },
   {
     id: "emboss",
-    label: "Emboss",
     kernel: [
       [-2, -1, 0],
       [-1, 1, 1],
       [0, 1, 2],
     ],
-    explain: "Bright on one diagonal side, dark on the other: surfaces look lit from one corner, like a relief. The weights add up to 1, so overall brightness stays the same.",
   },
-  {
-    id: "threshold",
-    label: "Threshold",
-    explain: "Every pixel becomes black or white. The simplest segmentation: separate the object from the background.",
-  },
+  { id: "threshold" },
 ];
 
 /** The kernel of a filter, looked up by id (not by position in the list, which can change). */
