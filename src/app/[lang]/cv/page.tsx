@@ -1,27 +1,44 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { cv, formatRange, type Entry } from "@/data/cv";
+import { notFound } from "next/navigation";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { formatRange, getCv, type Entry } from "@/data/cv";
+import { hasLang, LANGS, type Lang } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 
-// The /cv page: the "Classic CV". Plain, fast, printable.
+// The /en/cv, /es/cv, /fr/cv page: the "Classic CV". Plain, fast, printable.
 // This is a Server Component (the default): it becomes plain HTML at build time,
 // so it loads instantly and needs no JavaScript in the browser.
 
-export const metadata: Metadata = {
-  title: `${cv.name} · CV`,
-  description: cv.role,
-};
+export async function generateMetadata({ params }: PageProps<"/[lang]/cv">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLang(lang)) return {};
+  return {
+    title: getDictionary(lang).meta.cvTitle,
+    description: getCv(lang).role,
+    alternates: { languages: Object.fromEntries(LANGS.map((l) => [l, `/${l}/cv`])) },
+  };
+}
 
-export default function CvPage() {
+export default async function CvPage({ params }: PageProps<"/[lang]/cv">) {
+  const { lang } = await params;
+  if (!hasLang(lang)) notFound();
+  const cv = getCv(lang);
+  const dict = getDictionary(lang).cv;
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-6 md:px-8 md:py-10 print:max-w-none print:p-0">
       {/* Top bar: navigation only, hidden on paper */}
       <nav className="mb-8 flex items-center justify-between gap-3 print:hidden">
         <Link
-          href="/"
+          href={`/${lang}`}
           className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium opacity-80 hover:bg-foreground/5 hover:opacity-100"
         >
-          ← Back to home
+          {dict.back}
         </Link>
+        <div className="ml-auto">
+          <LanguageSwitcher lang={lang} path="/cv" label={getDictionary(lang).header.language} />
+        </div>
         {/* "&&" = only render the button if pdfUrl exists */}
         {cv.pdfUrl && (
           <a
@@ -29,7 +46,7 @@ export default function CvPage() {
             download
             className="inline-flex min-h-11 items-center rounded-lg bg-foreground px-4 text-sm font-semibold text-background hover:opacity-90"
           >
-            Download PDF
+            {dict.download}
           </a>
         )}
       </nav>
@@ -58,14 +75,14 @@ export default function CvPage() {
       {/* Body: 1 column on phone, main + sidebar on PC */}
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px]">
         <main className="space-y-10">
-          <EntrySection title="Experience" entries={cv.experience} />
-          <EntrySection title="Awards" entries={cv.projects} />
-          <EntrySection title="Education" entries={cv.education} />
-          <EntrySection title="Leadership" entries={cv.activities} />
+          <EntrySection title={dict.experience} entries={cv.experience} lang={lang} />
+          <EntrySection title={dict.awards} entries={cv.projects} lang={lang} />
+          <EntrySection title={dict.education} entries={cv.education} lang={lang} />
+          <EntrySection title={dict.leadership} entries={cv.activities} lang={lang} />
         </main>
 
         <aside className="space-y-8 lg:border-l lg:border-foreground/15 lg:pl-8">
-          <SideSection title="Skills">
+          <SideSection title={dict.skills}>
             {cv.skills.map((group) => (
               <div key={group.name} className="mb-4 last:mb-0">
                 <h3 className="mb-2 text-sm font-semibold">{group.name}</h3>
@@ -74,21 +91,21 @@ export default function CvPage() {
             ))}
           </SideSection>
 
-          <SideSection title="Languages">
+          <SideSection title={dict.languages}>
             <ul className="space-y-1 text-sm">
-              {cv.languages.map((lang) => (
-                <li key={lang.name}>
-                  <span className="font-medium">{lang.name}</span> · {lang.level}
+              {cv.languages.map((language) => (
+                <li key={language.name}>
+                  <span className="font-medium">{language.name}</span> · {language.level}
                 </li>
               ))}
             </ul>
           </SideSection>
 
-          <SideSection title="Soft skills">
+          <SideSection title={dict.softSkills}>
             <SimpleList items={cv.softSkills} />
           </SideSection>
 
-          <SideSection title="Hobbies">
+          <SideSection title={dict.hobbies}>
             <SimpleList items={cv.hobbies.map((h) => h.title ?? h.text)} />
           </SideSection>
         </aside>
@@ -100,7 +117,7 @@ export default function CvPage() {
 // ---------- Small reusable components ----------
 
 /** A titled list of CV entries (jobs, degrees, projects...). */
-function EntrySection({ title, entries }: { title: string; entries: Entry[] }) {
+function EntrySection({ title, entries, lang }: { title: string; entries: Entry[]; lang: Lang }) {
   return (
     <section>
       <h2 className="mb-5 text-sm font-bold uppercase tracking-widest text-accent">{title}</h2>
@@ -113,7 +130,7 @@ function EntrySection({ title, entries }: { title: string; entries: Entry[] }) {
               <span>
                 {entry.org} · {entry.location}
               </span>
-              <span className="whitespace-nowrap">{formatRange(entry.start, entry.end)}</span>
+              <span className="whitespace-nowrap">{formatRange(entry.start, entry.end, lang)}</span>
             </p>
             <ul className="mt-3 list-disc space-y-1.5 pl-5 text-[15px] leading-relaxed">
               {entry.highlights.map((line) => (

@@ -1,36 +1,35 @@
 import { ArrowUpRight, FileText, Languages, Mail, MapPin, Trophy } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ExperienceCarousel } from "@/components/ExperienceCarousel";
-import { VisionLab } from "@/components/VisionLab";
 import { Icon } from "@/components/Icon";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OrgLogo } from "@/components/OrgLogo";
 import { PaletteButton } from "@/components/PaletteButton";
-import { cv, formatRange, type Entry, type IconName } from "@/data/cv";
+import { VisionLab } from "@/components/VisionLab";
+import { formatRange, getCv, type CV, type Entry, type IconName } from "@/data/cv";
+import { hasLang, type Lang } from "@/i18n/config";
+import { getDictionary, t, type Dict } from "@/i18n/dictionaries";
 
-// The home page ("/"): one page that scrolls through 5 sections.
-// Server Component: becomes plain HTML at build time. Only the carousel and the game
-// run JavaScript in the browser ("use client" inside them).
-
-// Menu links (the name on the left already goes to #about)
-const NAV = [
-  { href: "#experience", label: "Experience" },
-  { href: "#off-the-clock", label: "Off the clock" },
-  { href: "#vision", label: "Vision" },
-  { href: "#contact", label: "Contact" },
-];
-
-const linkedIn = cv.links.find((l) => l.label === "LinkedIn");
-const gitHub = cv.links.find((l) => l.label === "GitHub");
-const currentJob = cv.experience.find((job) => job.end === null);
+// The home page (/en, /es, /fr): one page that scrolls through 5 sections.
+// Server Component: becomes plain HTML at build time (once per language). Only the carousel,
+// the vision lab and the color button run JavaScript in the browser ("use client" inside them).
 
 // Shared container: centered column, same width everywhere
 const container = "mx-auto w-full max-w-3xl px-5 md:px-8";
 
-export default function Home() {
+export default async function Home({ params }: PageProps<"/[lang]">) {
+  const { lang } = await params;
+  if (!hasLang(lang)) notFound();
+  const cv = getCv(lang); // content in this language
+  const dict = getDictionary(lang); // UI texts in this language
+
+  const currentJob = cv.experience.find((job) => job.end === null);
+
   return (
     <>
-      <SiteHeader />
+      <SiteHeader cv={cv} dict={dict} lang={lang} />
 
       <main>
         {/* 1. ABOUT (hero) ------------------------------------------------ */}
@@ -48,15 +47,15 @@ export default function Home() {
                       <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-60 motion-safe:animate-ping" />
                       <span className="relative inline-flex size-2 rounded-full bg-accent" />
                     </span>
-                    Currently at {currentJob.org}
+                    {t(dict.hero.currentlyAt, { org: currentJob.org })}
                   </p>
                 )}
-                <p className="mt-6 font-display text-3xl text-accent italic md:text-4xl">Hi, I&apos;m</p>
+                <p className="mt-6 font-display text-3xl text-accent italic md:text-4xl">{dict.hero.hi}</p>
                 <h1 id="about-title" className="font-display text-5xl leading-[0.95] tracking-tight md:text-7xl">
                   {cv.name}
                 </h1>
               </div>
-              <Avatar />
+              <Avatar cv={cv} />
             </div>
 
             <p className="mt-5 font-mono text-xs tracking-widest text-muted uppercase md:text-sm">{cv.role}</p>
@@ -72,39 +71,48 @@ export default function Home() {
             <ul className="mt-8 flex flex-wrap gap-2 text-sm">
               <Chip icon={<MapPin className="size-4" strokeWidth={1.6} />}>{cv.location}</Chip>
               <Chip icon={<Languages className="size-4" strokeWidth={1.6} />}>ES · EN · FR</Chip>
-              <Chip icon={<Trophy className="size-4" strokeWidth={1.6} />}>1st prize, Thales RISC-V</Chip>
+              <Chip icon={<Trophy className="size-4" strokeWidth={1.6} />}>{dict.hero.prize}</Chip>
             </ul>
 
             <div className="mt-10 flex flex-wrap gap-3">
               <a href="#contact" className={primaryButton}>
                 <Mail className="size-4" strokeWidth={2} aria-hidden="true" />
-                Get in touch
+                {dict.hero.getInTouch}
               </a>
-              <Link href="/cv" className={secondaryButton}>
+              <Link href={`/${lang}/cv`} className={secondaryButton}>
                 <FileText className="size-4" strokeWidth={1.8} aria-hidden="true" />
-                Classic CV
+                {dict.hero.classicCv}
               </Link>
-              <SocialLinks />
+              <SocialLinks cv={cv} />
             </div>
           </div>
         </section>
 
         {/* 2. EXPERIENCE -------------------------------------------------- */}
-        <Section id="experience" number="01" label="Experience" title="Experience">
-          <ExperienceCarousel entries={cv.experience} />
+        <Section id="experience" number="01" label={dict.experience.label} title={dict.experience.title}>
+          <ExperienceCarousel
+            entries={cv.experience.map((e) => ({ ...e, dates: formatRange(e.start, e.end, lang) }))}
+            text={dict.experience}
+          />
 
           <div className="mt-16">
-            <EntryGroup title="Education" entries={cv.education} columns={2} />
+            <EntryGroup title={dict.experience.education} entries={cv.education} lang={lang} columns={2} />
           </div>
           {/* Awards and Leadership have one card each: side by side on PC, stacked on phone */}
           <div className="mt-10 grid gap-10 md:grid-cols-2 md:gap-3">
-            <EntryGroup title="Awards" entries={cv.projects} />
-            <EntryGroup title="Leadership" entries={cv.activities} />
+            <EntryGroup title={dict.experience.awards} entries={cv.projects} lang={lang} />
+            <EntryGroup title={dict.experience.leadership} entries={cv.activities} lang={lang} />
           </div>
         </Section>
 
         {/* 3. OFF THE CLOCK ----------------------------------------------- */}
-        <Section id="off-the-clock" number="02" label="Personal" title="Off the clock" intro="The less formal part. When I'm not writing code:">
+        <Section
+          id="off-the-clock"
+          number="02"
+          label={dict.offTheClock.label}
+          title={dict.offTheClock.title}
+          intro={dict.offTheClock.intro}
+        >
           <ul className="grid gap-3 md:grid-cols-3">
             {cv.hobbies.map((hobby) => (
               <li
@@ -118,7 +126,7 @@ export default function Home() {
             ))}
           </ul>
 
-          <h3 className="mt-14 mb-5 font-mono text-xs tracking-widest text-muted uppercase">Fun facts</h3>
+          <h3 className="mt-14 mb-5 font-mono text-xs tracking-widest text-muted uppercase">{dict.offTheClock.funFacts}</h3>
           <ul className="grid gap-x-8 gap-y-4 md:grid-cols-2">
             {cv.funFacts.map((fact) => (
               <li key={fact.text} className="flex items-start gap-3 leading-relaxed">
@@ -130,18 +138,12 @@ export default function Home() {
         </Section>
 
         {/* 4. VISION ------------------------------------------------------ */}
-        <Section
-          id="vision"
-          number="03"
-          label="Vision"
-          title="How a machine sees"
-          intro="I think visually, which is why I studied image processing and computer vision. To a computer, an image is just a grid of numbers, and a filter is a tiny grid that slides over it. Try it:"
-        >
-          <VisionLab />
+        <Section id="vision" number="03" label={dict.vision.label} title={dict.vision.title} intro={dict.vision.intro}>
+          <VisionLab text={dict.vision} />
         </Section>
 
         {/* 5. CONTACT ----------------------------------------------------- */}
-        <Section id="contact" number="04" label="Contact" title="Let's talk" intro="A project, a question, or just a hello: my inbox is open.">
+        <Section id="contact" number="04" label={dict.contact.label} title={dict.contact.title} intro={dict.contact.intro}>
           <a
             href={`mailto:${cv.email}`}
             className="group inline-flex items-center gap-2 font-display text-3xl break-all decoration-accent decoration-2 underline-offset-8 hover:underline md:text-5xl"
@@ -155,9 +157,9 @@ export default function Home() {
           <div className="mt-10 flex flex-wrap gap-3">
             <a href={`mailto:${cv.email}`} className={primaryButton}>
               <Mail className="size-4" strokeWidth={2} aria-hidden="true" />
-              Send an email
+              {dict.contact.send}
             </a>
-            <SocialLinks />
+            <SocialLinks cv={cv} />
           </div>
         </Section>
       </main>
@@ -167,7 +169,7 @@ export default function Home() {
           <p>
             © <CurrentYear /> {cv.name}
           </p>
-          <p>Built with Next.js, Tailwind CSS & Vercel</p>
+          <p>{dict.footer.built}</p>
         </div>
       </footer>
     </>
@@ -182,10 +184,11 @@ const secondaryButton =
   "inline-flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface px-5 text-sm font-medium transition hover:border-foreground/30";
 
 /** LinkedIn + GitHub as text links with a ↗ arrow (they open a new tab). */
-function SocialLinks() {
+function SocialLinks({ cv }: { cv: CV }) {
+  const links = ["LinkedIn", "GitHub"].map((label) => cv.links.find((l) => l.label === label));
   return (
     <>
-      {[linkedIn, gitHub].map(
+      {links.map(
         (link) =>
           link && (
             <a key={link.href} href={link.href} target="_blank" rel="noreferrer" className={`group ${secondaryButton}`}>
@@ -202,7 +205,13 @@ function SocialLinks() {
 }
 
 /** Sticky top menu. On phones the links scroll sideways instead of wrapping. */
-function SiteHeader() {
+function SiteHeader({ cv, dict, lang }: { cv: CV; dict: Dict; lang: Lang }) {
+  const nav = [
+    { href: "#experience", label: dict.nav.experience },
+    { href: "#off-the-clock", label: dict.nav.offTheClock },
+    { href: "#vision", label: dict.nav.vision },
+    { href: "#contact", label: dict.nav.contact },
+  ];
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex w-full max-w-3xl items-center gap-2 px-5 md:gap-3 md:px-8">
@@ -210,10 +219,10 @@ function SiteHeader() {
           {cv.firstName}
           <span className="text-accent">.</span>
         </a>
-        <nav aria-label="Sections" className="min-w-0 flex-1">
+        <nav aria-label={dict.nav.sections} className="min-w-0 flex-1">
           {/* mask: the links fade out at the right edge on phones, hinting they scroll */}
           <ul className="flex gap-1 overflow-x-auto text-sm [scrollbar-width:none] [mask-image:linear-gradient(to_right,black_85%,transparent)] md:[mask-image:none] [&::-webkit-scrollbar]:hidden">
-            {NAV.map((item) => (
+            {nav.map((item) => (
               <li key={item.href} className="shrink-0">
                 <a href={item.href} className="flex min-h-11 items-center rounded-full px-3 text-muted transition-colors hover:text-foreground">
                   {item.label}
@@ -222,10 +231,11 @@ function SiteHeader() {
             ))}
           </ul>
         </nav>
-        <PaletteButton />
+        <LanguageSwitcher lang={lang} label={dict.header.language} />
+        <PaletteButton text={{ ...dict.header, names: dict.palettes }} />
         <Link
-          href="/cv"
-          className="relative inline-flex min-h-9 shrink-0 items-center gap-1.5 after:absolute after:-inset-1 after:content-[''] rounded-full border border-border bg-surface px-3 text-sm font-medium transition hover:border-foreground/30"
+          href={`/${lang}/cv`}
+          className="relative inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-sm font-medium transition after:absolute after:-inset-1 after:content-[''] hover:border-foreground/30"
         >
           <FileText className="size-4" strokeWidth={1.8} aria-hidden="true" />
           CV
@@ -246,7 +256,7 @@ function Section({
 }: {
   id: string;
   number: string;
-  label: string; // short label above the title, e.g. "Game"
+  label: string; // short label above the title, e.g. "Vision"
   title: string;
   intro?: string;
   children: React.ReactNode;
@@ -268,7 +278,7 @@ function Section({
 }
 
 /** A small titled list of entries (degrees, awards...) with their logos. */
-function EntryGroup({ title, entries, columns = 1 }: { title: string; entries: Entry[]; columns?: 1 | 2 }) {
+function EntryGroup({ title, entries, lang, columns = 1 }: { title: string; entries: Entry[]; lang: Lang; columns?: 1 | 2 }) {
   if (entries.length === 0) return null; // no empty headings
   return (
     <div>
@@ -280,7 +290,7 @@ function EntryGroup({ title, entries, columns = 1 }: { title: string; entries: E
             <div>
               <p className="leading-snug font-semibold">{entry.title}</p>
               <p className="mt-1 text-sm text-muted">{entry.org}</p>
-              <p className="mt-1 font-mono text-xs text-muted">{formatRange(entry.start, entry.end)}</p>
+              <p className="mt-1 font-mono text-xs text-muted">{formatRange(entry.start, entry.end, lang)}</p>
             </div>
           </li>
         ))}
@@ -289,7 +299,7 @@ function EntryGroup({ title, entries, columns = 1 }: { title: string; entries: E
   );
 }
 
-/** Icon inside a soft orange rounded square. */
+/** Icon inside a soft accent-colored rounded square. */
 function IconBadge({ name, large = false }: { name: IconName; large?: boolean }) {
   return (
     <span
@@ -322,7 +332,7 @@ async function CurrentYear() {
 }
 
 /** My photo if set in cv.ts, otherwise my initials in a circle. */
-function Avatar() {
+function Avatar({ cv }: { cv: CV }) {
   const ring = "size-24 shrink-0 rounded-full ring-1 ring-border ring-offset-4 ring-offset-background md:size-32";
   if (cv.photo) {
     return <Image src={cv.photo} alt={cv.name} width={128} height={128} loading="eager" className={`${ring} object-cover`} />;
