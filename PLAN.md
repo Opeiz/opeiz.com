@@ -107,6 +107,7 @@ events         (id, name, section, created_at)
 - [x] Sticky menu with section links and CV button
 - [x] About / hero with summary and buttons
 - [x] Experience carousel (swipe, arrows, dots, keyboard) + education & awards
+- [x] Company and school logos (extracted from my PDF CV, in `public/logos/`)
 - [x] Off the clock: hobbies and fun facts
 - [x] ~~Game of Life section~~ → replaced by the vision lab
 - [x] Vision lab: filters, before/after slider, kernel + convolution diagram, photo upload, live camera, with tests
