@@ -30,7 +30,19 @@ export type Entry = {
 export type SkillGroup = { name: string; items: string[] };
 
 /** Icon names (the drawings live in src/components/Icon.tsx, data stays free of React). */
-export type IconName = "drone" | "sailboat" | "palette" | "globe" | "languages" | "graduation" | "trophy" | "users" | "cpu";
+export type IconName =
+  | "drone"
+  | "sailboat"
+  | "palette"
+  | "swords"
+  | "brush"
+  | "disc"
+  | "globe"
+  | "languages"
+  | "graduation"
+  | "trophy"
+  | "users"
+  | "cpu";
 
 /** Something with an icon and a sentence: hobbies, fun facts... */
 export type IconItem = { icon: IconName; title?: string; text: string };
@@ -412,15 +424,6 @@ const source: Source = {
   // DRAFT: make these sound like me
   hobbies: [
     {
-      icon: "drone",
-      title: { en: "FPV drone racing", es: "Carreras de drones FPV", fr: "Course de drones FPV" },
-      text: {
-        en: "Racing small drones in first-person view, through goggles.",
-        es: "Carreras de drones pequeños en primera persona, con gafas FPV.",
-        fr: "Des courses de petits drones en vue subjective, avec un casque FPV.",
-      },
-    },
-    {
       icon: "sailboat",
       title: { en: "Sailing", es: "Vela", fr: "Voile" },
       text: {
@@ -430,12 +433,48 @@ const source: Source = {
       },
     },
     {
+      icon: "drone",
+      title: { en: "FPV drone racing", es: "Carreras de drones FPV", fr: "Course de drones FPV" },
+      text: {
+        en: "Racing small drones in first-person view, through goggles.",
+        es: "Carreras de drones pequeños en primera persona, con gafas FPV.",
+        fr: "Des courses de petits drones en vue subjective, avec un casque FPV.",
+      },
+    },
+    {
       icon: "palette",
       title: { en: "Graphic design", es: "Diseño gráfico", fr: "Design graphique" },
       text: {
         en: "My creative side, away from the code.",
         es: "Mi lado creativo, lejos del código.",
         fr: "Mon côté créatif, loin du code.",
+      },
+    },
+    {
+      icon: "swords",
+      title: { en: "Riftbound player", es: "Jugador de Riftbound", fr: "Joueur de Riftbound" },
+      text: {
+        en: "The League of Legends trading card game: building decks and planning every turn.",
+        es: "El juego de cartas coleccionables de League of Legends: armar mazos y planificar cada turno.",
+        fr: "Le jeu de cartes à collectionner de League of Legends : construire des decks et planifier chaque tour.",
+      },
+    },
+    {
+      icon: "brush",
+      title: { en: "Miniature painting", es: "Pintura de miniaturas", fr: "Peinture de figurines" },
+      text: {
+        en: "Bringing tiny figures to life, one brushstroke at a time.",
+        es: "Dar vida a figuras diminutas, pincelada a pincelada.",
+        fr: "Donner vie à de toutes petites figurines, un coup de pinceau à la fois.",
+      },
+    },
+    {
+      icon: "disc",
+      title: { en: "DJ", es: "DJ", fr: "DJ" },
+      text: {
+        en: "Mixing tracks and reading the room from behind the decks.",
+        es: "Mezclar canciones y leer a la pista desde las tornamesas.",
+        fr: "Mixer des morceaux et sentir la piste depuis les platines.",
       },
     },
   ],
