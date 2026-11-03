@@ -41,7 +41,9 @@ One page (`/`), sections stacked top to bottom, plus the classic CV at `/cv`.
 | Contact | `page.tsx` | `mailto:` for now; real form in Phase 3 |
 | Classic CV | `src/app/cv/page.tsx` | Printable, PDF download when `cv.pdfUrl` is set |
 
-**All content lives in `src/data/cv.ts`**: write it once, every page uses it.
+**All content lives in `src/data/cv.ts`**: write it once, every page uses it. Every text is `{ en, es, fr }`; `getCv(lang)` gives one language. UI texts (menus, buttons, labels) live in `src/i18n/dictionaries.ts`.
+
+**Languages:** `/en`, `/es`, `/fr` (and `/en/cv`...). `src/proxy.ts` redirects `/` to the visitor's language (saved choice in a cookie, otherwise the browser's language, otherwise English).
 
 ### Rules (do not skip)
 - The **classic CV** (`/cv`) is always one click away (menu "CV" button).
@@ -132,7 +134,8 @@ events         (id, name, section, created_at)
 - [ ] SEO, metadata, social preview image
 - [ ] Accessibility pass, Lighthouse above 90 (mobile)
 - [ ] Custom domain (opeiz.com)
-- [ ] Language switcher: English / Español / Français
+- [x] Language switcher: English / Español / Français (`/en` `/es` `/fr`, flags in the header, proxy detects the browser language)
+- [ ] Review the Spanish and French translations (`src/data/cv.ts`, `src/i18n/dictionaries.ts`)
 
 ### Phase 6: Keep it alive
 - [ ] "Devlog": write about building the site (shows how I think)

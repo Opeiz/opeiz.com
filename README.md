@@ -1,6 +1,6 @@
 # Joaquin Opazo Yentzen · Personal site
 
-My CV and portfolio: a one-page site with my experience, a bit about me off the clock, a small computer vision lab (image filters, live camera), and a way to get in touch.
+My CV and portfolio, in English, Español and Français: a one-page site with my experience, a bit about me off the clock, a small computer vision lab (image filters, live camera), and a way to get in touch.
 
 Prefer paper? A classic, printable CV lives at [`/cv`](https://opeiz-com.vercel.app/cv).
 
@@ -11,16 +11,18 @@ Next.js 16 (App Router) + TypeScript · Tailwind CSS v4 · Vercel
 ```bash
 npm install
 npm run dev        # http://localhost:3000
-npm test           # image filter math
+npm test           # filters, palettes, translations
 npm run build      # same build Vercel runs
 ```
 
 ## Where things are
 | Path | What |
 |---|---|
-| `src/data/cv.ts` | All the content (edit this to update the site) |
-| `src/app/page.tsx` | The one-page site |
-| `src/app/cv/page.tsx` | The printable classic CV |
+| `src/data/cv.ts` | All the content, in 3 languages (edit this to update the site) |
+| `src/i18n/` | Languages: config, UI texts (dictionaries), tests |
+| `src/proxy.ts` | Sends `/` to `/en`, `/es` or `/fr` |
+| `src/app/[lang]/page.tsx` | The one-page site |
+| `src/app/[lang]/cv/page.tsx` | The printable classic CV |
 | `src/components/` | Experience carousel, vision lab |
 | `src/lib/vision.ts` | Image filters: convolution, Sobel, threshold (pure functions + tests) |
 
