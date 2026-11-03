@@ -59,9 +59,9 @@ export default function CvPage() {
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px]">
         <main className="space-y-10">
           <EntrySection title="Experience" entries={cv.experience} />
-          <EntrySection title="Projects & Awards" entries={cv.projects} />
+          <EntrySection title="Awards" entries={cv.projects} />
           <EntrySection title="Education" entries={cv.education} />
-          <EntrySection title="Activities" entries={cv.activities} />
+          <EntrySection title="Leadership" entries={cv.activities} />
         </main>
 
         <aside className="space-y-8 lg:border-l lg:border-foreground/15 lg:pl-8">

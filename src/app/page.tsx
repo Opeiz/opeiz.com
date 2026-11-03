@@ -5,7 +5,7 @@ import { ExperienceCarousel } from "@/components/ExperienceCarousel";
 import { VisionLab } from "@/components/VisionLab";
 import { Icon } from "@/components/Icon";
 import { OrgLogo } from "@/components/OrgLogo";
-import { cv, formatRange, type IconName } from "@/data/cv";
+import { cv, formatRange, type Entry, type IconName } from "@/data/cv";
 
 // The home page ("/"): one page that scrolls through 5 sections.
 // Server Component: becomes plain HTML at build time. Only the carousel and the game
@@ -92,19 +92,14 @@ export default function Home() {
         <Section id="experience" number="01" label="Experience" title="Experience">
           <ExperienceCarousel entries={cv.experience} />
 
-          <h3 className="mt-16 mb-4 font-mono text-xs tracking-widest text-muted uppercase">Education & awards</h3>
-          <ul className="grid gap-3 md:grid-cols-2">
-            {[...cv.education, ...cv.projects, ...cv.activities].map((entry) => (
-              <li key={entry.slug} className="flex gap-4 rounded-2xl border border-border bg-surface p-4">
-                <OrgLogo src={entry.logo} org={entry.org} />
-                <div>
-                  <p className="leading-snug font-semibold">{entry.title}</p>
-                  <p className="mt-1 text-sm text-muted">{entry.org}</p>
-                  <p className="mt-1 font-mono text-xs text-muted">{formatRange(entry.start, entry.end)}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <div className="mt-16">
+            <EntryGroup title="Education" entries={cv.education} columns={2} />
+          </div>
+          {/* Awards and Leadership have one card each: side by side on PC, stacked on phone */}
+          <div className="mt-10 grid gap-10 md:grid-cols-2 md:gap-3">
+            <EntryGroup title="Awards" entries={cv.projects} />
+            <EntryGroup title="Leadership" entries={cv.activities} />
+          </div>
         </Section>
 
         {/* 3. OFF THE CLOCK ----------------------------------------------- */}
@@ -267,6 +262,28 @@ function Section({
         <div className="mt-10">{children}</div>
       </div>
     </section>
+  );
+}
+
+/** A small titled list of entries (degrees, awards...) with their logos. */
+function EntryGroup({ title, entries, columns = 1 }: { title: string; entries: Entry[]; columns?: 1 | 2 }) {
+  if (entries.length === 0) return null; // no empty headings
+  return (
+    <div>
+      <h3 className="mb-4 font-mono text-xs tracking-widest text-muted uppercase">{title}</h3>
+      <ul className={`grid gap-3 ${columns === 2 ? "md:grid-cols-2" : ""}`}>
+        {entries.map((entry) => (
+          <li key={entry.slug} className="flex h-full gap-4 rounded-2xl border border-border bg-surface p-4">
+            <OrgLogo src={entry.logo} org={entry.org} />
+            <div>
+              <p className="leading-snug font-semibold">{entry.title}</p>
+              <p className="mt-1 text-sm text-muted">{entry.org}</p>
+              <p className="mt-1 font-mono text-xs text-muted">{formatRange(entry.start, entry.end)}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
