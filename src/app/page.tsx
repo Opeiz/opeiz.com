@@ -5,6 +5,7 @@ import { ExperienceCarousel } from "@/components/ExperienceCarousel";
 import { VisionLab } from "@/components/VisionLab";
 import { Icon } from "@/components/Icon";
 import { OrgLogo } from "@/components/OrgLogo";
+import { PaletteButton } from "@/components/PaletteButton";
 import { cv, formatRange, type Entry, type IconName } from "@/data/cv";
 
 // The home page ("/"): one page that scrolls through 5 sections.
@@ -204,7 +205,7 @@ function SocialLinks() {
 function SiteHeader() {
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-3xl items-center gap-3 px-5 md:px-8">
+      <div className="mx-auto flex w-full max-w-3xl items-center gap-2 px-5 md:gap-3 md:px-8">
         <a href="#about" className="flex min-h-14 shrink-0 items-center font-display text-2xl">
           {cv.firstName}
           <span className="text-accent">.</span>
@@ -221,9 +222,10 @@ function SiteHeader() {
             ))}
           </ul>
         </nav>
+        <PaletteButton />
         <Link
           href="/cv"
-          className="inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-sm font-medium transition hover:border-foreground/30"
+          className="relative inline-flex min-h-9 shrink-0 items-center gap-1.5 after:absolute after:-inset-1 after:content-[''] rounded-full border border-border bg-surface px-3 text-sm font-medium transition hover:border-foreground/30"
         >
           <FileText className="size-4" strokeWidth={1.8} aria-hidden="true" />
           CV
