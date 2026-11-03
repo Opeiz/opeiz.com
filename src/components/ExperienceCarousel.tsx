@@ -3,15 +3,17 @@
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { OrgLogo } from "@/components/OrgLogo";
-import { formatRange, type Entry } from "@/data/cv";
+import type { Entry } from "@/data/cv";
+import { t, type Dict } from "@/i18n/dictionaries";
 
 /**
  * Experience cards in a sideways-scrolling row.
  * - Phone: swipe (native CSS scroll-snap, no library)
  * - Everyone: ◀ ▶ buttons and dots
  * - Keyboard: ← → arrow keys when the carousel has focus
+ * Texts come in as props (already in the visitor's language): this runs in the browser.
  */
-export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
+export function ExperienceCarousel({ entries, text }: { entries: (Entry & { dates: string })[]; text: Dict["experience"] }) {
   const track = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const last = entries.length - 1;
@@ -52,7 +54,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
     <div
       role="region"
       aria-roledescription="carousel"
-      aria-label="Work experience"
+      aria-label={text.region}
       onKeyDown={(e) => {
         if (e.key === "ArrowRight") goTo(Math.min(last, index + 1));
         if (e.key === "ArrowLeft") goTo(Math.max(0, index - 1));
@@ -62,7 +64,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
         ref={track}
         onScroll={onScroll}
         tabIndex={0}
-        aria-label="Experience cards. Use the arrow keys to move between them."
+        aria-label={text.track}
         // "relative" makes card.offsetLeft measured from the track itself
         className="relative flex snap-x snap-mandatory gap-4 overflow-x-auto rounded-3xl pb-2 outline-none [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-accent [&::-webkit-scrollbar]:hidden"
       >
@@ -71,7 +73,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
             key={entry.slug}
             role="group"
             aria-roledescription="slide"
-            aria-label={`${i + 1} of ${entries.length}: ${entry.org}`}
+            aria-label={t(text.slide, { i: i + 1, n: entries.length, org: entry.org })}
             className="w-[88%] shrink-0 snap-start rounded-3xl border border-border bg-surface p-6 shadow-sm md:w-full md:p-10"
           >
             {/* Top row: logo on the left, dates (+ "Current") on the right */}
@@ -79,9 +81,9 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
               <OrgLogo src={entry.logo} org={entry.org} size="lg" />
               <div className="flex flex-wrap items-center justify-end gap-2 pt-1 text-right font-mono text-xs text-muted">
                 {entry.end === null && (
-                  <span className="rounded-full bg-accent-soft px-2 py-0.5 font-semibold text-accent">Current</span>
+                  <span className="rounded-full bg-accent-soft px-2 py-0.5 font-semibold text-accent">{text.current}</span>
                 )}
-                <span>{formatRange(entry.start, entry.end)}</span>
+                <span>{entry.dates}</span>
               </div>
             </div>
             <h3 className="mt-5 font-display text-2xl leading-tight md:text-4xl">{entry.title}</h3>
@@ -108,7 +110,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
 
       {/* Controls */}
       <div className="mt-4 flex items-center justify-between gap-4">
-        <button type="button" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label="Previous job" className={arrow}>
+        <button type="button" onClick={() => goTo(index - 1)} disabled={index === 0} aria-label={text.previous} className={arrow}>
           <ArrowLeft className="size-5" strokeWidth={1.8} aria-hidden="true" />
         </button>
 
@@ -118,7 +120,7 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
               key={entry.slug}
               type="button"
               onClick={() => goTo(i)}
-              aria-label={`Go to ${entry.org}`}
+              aria-label={t(text.goTo, { org: entry.org })}
               aria-current={i === index}
               // 44px tap area, small visible dot inside
               className="flex h-11 w-7 items-center justify-center"
@@ -128,14 +130,14 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
           ))}
         </div>
 
-        <button type="button" onClick={() => goTo(index + 1)} disabled={index === last} aria-label="Next job" className={arrow}>
+        <button type="button" onClick={() => goTo(index + 1)} disabled={index === last} aria-label={text.next} className={arrow}>
           <ArrowRight className="size-5" strokeWidth={1.8} aria-hidden="true" />
         </button>
       </div>
 
       {/* Screen readers hear "2 of 5" when the card changes */}
       <p className="sr-only" aria-live="polite">
-        {`Job ${index + 1} of ${entries.length}: ${entries[index].title} at ${entries[index].org}`}
+        {t(text.announce, { i: index + 1, n: entries.length, title: entries[index].title, org: entries[index].org })}
       </p>
     </div>
   );

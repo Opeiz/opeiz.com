@@ -3,6 +3,7 @@
 import { Camera, CameraOff, ImageUp, Mountain } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { drawCover, drawScene } from "@/lib/scene";
+import { t, type Dict } from "@/i18n/dictionaries";
 import { applyFilter, FILTERS, type FilterId, type Kernel } from "@/lib/vision";
 
 const W = 640; // processing size (enough detail, still fast enough for live camera)
@@ -14,7 +15,7 @@ type Source = "scene" | "photo" | "camera";
  * "How a machine sees": pick a filter, compare before/after, try your own photo or camera.
  * Everything runs in the browser; photos and camera frames are never uploaded.
  */
-export function VisionLab() {
+export function VisionLab({ text }: { text: Dict["vision"] }) {
   const sourceCanvas = useRef<HTMLCanvasElement | null>(null); // hidden: holds the current input image
   const originalCanvas = useRef<HTMLCanvasElement>(null);
   const outputCanvas = useRef<HTMLCanvasElement>(null);
@@ -29,6 +30,7 @@ export function VisionLab() {
   const [cameraError, setCameraError] = useState<string | null>(null);
 
   const filter = FILTERS.find((f) => f.id === filterId)!;
+  const filterText = text.filters[filterId]; // name + explanation in the visitor's language
 
   /** Read the input pixels, show them on the left, filter them, show the result on the right. */
   const render = useCallback(() => {
@@ -104,7 +106,7 @@ export function VisionLab() {
       setCameraError(null);
       setSource("camera");
     } catch {
-      setCameraError("Camera not available, or permission was denied.");
+      setCameraError(text.cameraError);
     }
   }
 
@@ -145,10 +147,10 @@ export function VisionLab() {
   return (
     <div>
       {/* Filter picker */}
-      <div role="group" aria-label="Filter" className="flex flex-wrap gap-2">
+      <div role="group" aria-label={text.filterGroup} className="flex flex-wrap gap-2">
         {FILTERS.map((f) => (
           <button key={f.id} type="button" aria-pressed={f.id === filterId} onClick={() => setFilterId(f.id)} className={chip(f.id === filterId)}>
-            {f.label}
+            {text.filters[f.id].label}
           </button>
         ))}
       </div>
@@ -172,7 +174,7 @@ export function VisionLab() {
             width={W}
             height={H}
             role="img"
-            aria-label={`${filter.label} applied to the ${source === "scene" ? "sample mountain scene" : source}`}
+            aria-label={t(text.imageLabel, { filter: filterText.label, source: text.sources[source] })}
             className="absolute inset-0 h-full w-full"
             style={{ clipPath: `inset(0 0 0 ${split}%)` }}
           />
@@ -181,16 +183,16 @@ export function VisionLab() {
             <span className="absolute top-1/2 left-1/2 size-7 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white bg-black/40 backdrop-blur" />
           </div>
           <span className="pointer-events-none absolute top-3 left-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[11px] text-white">
-            Original
+            {text.original}
           </span>
           <span className="pointer-events-none absolute top-3 right-3 rounded-full bg-black/55 px-2.5 py-1 font-mono text-[11px] text-white">
-            {filter.label}
+            {filterText.label}
           </span>
         </div>
 
         {/* Compare slider: the keyboard-friendly way to move the line */}
         <label className="mt-3 flex items-center gap-3 px-1 font-mono text-xs text-muted">
-          Compare
+          {text.compare}
           <input
             type="range"
             min={0}
@@ -203,7 +205,7 @@ export function VisionLab() {
 
         {filterId === "threshold" && (
           <label className="flex items-center gap-3 px-1 font-mono text-xs text-muted">
-            Level {level}
+            {t(text.level, { level })}
             <input
               type="range"
               min={0}
@@ -219,25 +221,25 @@ export function VisionLab() {
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <button type="button" onClick={showScene} aria-pressed={source === "scene"} className={sourceButton}>
             <Mountain className="size-4" strokeWidth={1.8} aria-hidden="true" />
-            Sample scene
+            {text.sampleScene}
           </button>
           <label className={`${sourceButton} cursor-pointer focus-within:ring-2 focus-within:ring-accent`}>
             <ImageUp className="size-4" strokeWidth={1.8} aria-hidden="true" />
-            Your photo
+            {text.yourPhoto}
             <input type="file" accept="image/*" onChange={onPhoto} className="sr-only" />
           </label>
           {source === "camera" ? (
             <button type="button" onClick={showScene} className={sourceButton}>
               <CameraOff className="size-4" strokeWidth={1.8} aria-hidden="true" />
-              Stop camera
+              {text.stopCamera}
             </button>
           ) : (
             <button type="button" onClick={startCamera} className={sourceButton}>
               <Camera className="size-4" strokeWidth={1.8} aria-hidden="true" />
-              Live camera
+              {text.liveCamera}
             </button>
           )}
-          <p className="ml-auto pr-1 font-mono text-xs text-muted">Processed in your browser, never uploaded</p>
+          <p className="ml-auto pr-1 font-mono text-xs text-muted">{text.privacy}</p>
         </div>
         {cameraError && (
           <p role="alert" className="mt-2 px-1 text-sm text-accent">
@@ -251,18 +253,18 @@ export function VisionLab() {
       {/* Diagram gets 3/5 of the width: it needs room for pixels × kernel = result on one line */}
       <div className="mt-4 grid gap-4 md:grid-cols-5">
         <div className="rounded-3xl border border-border bg-surface p-5 md:col-span-2 md:p-6">
-          <p className="font-mono text-xs tracking-widest text-accent uppercase">{filter.label}</p>
-          <p className="mt-3 leading-relaxed">{filter.explain}</p>
+          <p className="font-mono text-xs tracking-widest text-accent uppercase">{filterText.label}</p>
+          <p className="mt-3 leading-relaxed">{filterText.explain}</p>
           {filter.kernel ? (
             <div className="mt-5 flex items-center gap-3">
-              <KernelGrid kernel={filter.kernel} />
-              {filter.kernelNote && <span className="font-mono text-sm text-muted">{filter.kernelNote}</span>}
+              <KernelGrid kernel={filter.kernel} label={text.kernel} />
+              {filterText.note && <span className="font-mono text-sm text-muted">{filterText.note}</span>}
             </div>
           ) : (
-            <p className="mt-5 font-mono text-xs text-muted">No kernel: each pixel is changed on its own.</p>
+            <p className="mt-5 font-mono text-xs text-muted">{text.noKernel}</p>
           )}
         </div>
-        <ConvolutionDiagram kernel={filter.kernel ?? FILTERS.find((f) => f.id === "edges")!.kernel!} divisor={filterId === "blur" ? 16 : 1} offset={0} />
+        <ConvolutionDiagram kernel={filter.kernel ?? FILTERS.find((f) => f.id === "edges")!.kernel!} divisor={filterId === "blur" ? 16 : 1} offset={0} text={text} />
       </div>
     </div>
   );
@@ -271,9 +273,9 @@ export function VisionLab() {
 // ---------- Diagrams ----------
 
 /** A 3×3 kernel as a grid of numbers. Positive = orange, negative = muted, zero = faint. */
-function KernelGrid({ kernel, small = false }: { kernel: Kernel; small?: boolean }) {
+function KernelGrid({ kernel, label, small = false }: { kernel: Kernel; label: string; small?: boolean }) {
   return (
-    <div className={`grid grid-cols-3 gap-1 font-mono ${small ? "text-xs" : "text-sm"}`} aria-label={`Kernel: ${kernel.map((r) => r.join(" ")).join(" / ")}`}>
+    <div className={`grid grid-cols-3 gap-1 font-mono ${small ? "text-xs" : "text-sm"}`} aria-label={`${label}: ${kernel.map((r) => r.join(" ")).join(" / ")}`}>
       {kernel.flat().map((v, i) => (
         <span
           key={i}
@@ -295,7 +297,7 @@ const PATCH = Array.from({ length: 5 }, () => [10, 10, 10, 90, 90]);
  * How one output pixel is computed: take the 3×3 window around it, multiply by the kernel,
  * add everything up. The result uses the CURRENT filter's kernel.
  */
-function ConvolutionDiagram({ kernel, divisor, offset }: { kernel: Kernel; divisor: number; offset: number }) {
+function ConvolutionDiagram({ kernel, divisor, offset, text }: { kernel: Kernel; divisor: number; offset: number; text: Dict["vision"] }) {
   // Window = rows 1–3, columns 1–3 of the patch (centered on the middle pixel)
   let sum = 0;
   for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++) sum += PATCH[r + 1][c + 1] * kernel[r][c];
@@ -304,7 +306,7 @@ function ConvolutionDiagram({ kernel, divisor, offset }: { kernel: Kernel; divis
 
   return (
     <figure className="rounded-3xl border border-border bg-surface p-5 md:col-span-3 md:p-6">
-      <figcaption className="font-mono text-xs tracking-widest text-accent uppercase">How a filter works</figcaption>
+      <figcaption className="font-mono text-xs tracking-widest text-accent uppercase">{text.howTitle}</figcaption>
       <div className="mt-5 flex flex-wrap items-center gap-3" aria-hidden="true">
         {/* Pixels, with the 3×3 window highlighted */}
         <div className="grid grid-cols-5 gap-0.5 font-mono text-[10px]">
@@ -324,7 +326,7 @@ function ConvolutionDiagram({ kernel, divisor, offset }: { kernel: Kernel; divis
           )}
         </div>
         <span className="font-mono text-muted">×</span>
-        <KernelGrid kernel={kernel} small />
+        <KernelGrid kernel={kernel} label={text.kernel} small />
         <span className="font-mono text-muted">=</span>
         <span
           className="flex size-10 items-center justify-center rounded-md font-mono text-xs ring-2 ring-accent"
@@ -334,13 +336,18 @@ function ConvolutionDiagram({ kernel, divisor, offset }: { kernel: Kernel; divis
         </span>
       </div>
       <p className="mt-5 text-sm leading-relaxed text-muted">
-        Slide a 3×3 kernel over every pixel: multiply each neighbour by its weight and add them up
+        {text.howText}
         {divisor !== 1 && ` (÷ ${divisor})`}
-        {offset !== 0 && ` (+ ${offset})`}. Here: <span className="font-mono text-foreground">{Math.round(raw)}</span>
-        {raw !== clamped && <> → clamped to <span className="font-mono text-foreground">{clamped}</span></>}.
+        {offset !== 0 && ` (+ ${offset})`}. {text.here} <span className="font-mono text-foreground">{Math.round(raw)}</span>
+        {raw !== clamped && (
+          <>
+            {" "}→ {text.clampedTo} <span className="font-mono text-foreground">{clamped}</span>
+          </>
+        )}
+        .
       </p>
       <p className="mt-3 text-sm leading-relaxed text-muted">
-        A convolutional neural network (CNN) does exactly this, but <span className="text-foreground">learns</span> thousands of kernels by itself.
+        {text.cnnBefore} <span className="text-foreground">{text.cnnLearns}</span> {text.cnnAfter}
       </p>
     </figure>
   );
