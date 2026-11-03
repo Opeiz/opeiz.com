@@ -2,6 +2,7 @@
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { OrgLogo } from "@/components/OrgLogo";
 import { formatRange, type Entry } from "@/data/cv";
 
 /**
@@ -73,15 +74,17 @@ export function ExperienceCarousel({ entries }: { entries: Entry[] }) {
             aria-label={`${i + 1} of ${entries.length}: ${entry.org}`}
             className="w-[88%] shrink-0 snap-start rounded-3xl border border-border bg-surface p-6 shadow-sm md:w-full md:p-10"
           >
-            <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
-              <span>{formatRange(entry.start, entry.end)}</span>
-              {entry.end === null && (
-                <span className="rounded-full bg-accent-soft px-2 py-0.5 font-semibold text-accent">
-                  Current
-                </span>
-              )}
+            {/* Top row: logo on the left, dates (+ "Current") on the right */}
+            <div className="flex items-start justify-between gap-3">
+              <OrgLogo src={entry.logo} org={entry.org} size="lg" />
+              <div className="flex flex-wrap items-center justify-end gap-2 pt-1 text-right font-mono text-xs text-muted">
+                {entry.end === null && (
+                  <span className="rounded-full bg-accent-soft px-2 py-0.5 font-semibold text-accent">Current</span>
+                )}
+                <span>{formatRange(entry.start, entry.end)}</span>
+              </div>
             </div>
-            <h3 className="mt-4 font-display text-2xl leading-tight md:text-4xl">{entry.title}</h3>
+            <h3 className="mt-5 font-display text-2xl leading-tight md:text-4xl">{entry.title}</h3>
             <p className="mt-2 font-medium text-accent">
               {entry.org} <span className="font-normal text-muted">· {entry.location}</span>
             </p>

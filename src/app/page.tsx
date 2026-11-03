@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ExperienceCarousel } from "@/components/ExperienceCarousel";
 import { VisionLab } from "@/components/VisionLab";
 import { Icon } from "@/components/Icon";
+import { OrgLogo } from "@/components/OrgLogo";
 import { cv, formatRange, type IconName } from "@/data/cv";
 
 // The home page ("/"): one page that scrolls through 5 sections.
@@ -93,13 +94,9 @@ export default function Home() {
 
           <h3 className="mt-16 mb-4 font-mono text-xs tracking-widest text-muted uppercase">Education & awards</h3>
           <ul className="grid gap-3 md:grid-cols-2">
-            {[
-              ...cv.education.map((e) => ({ entry: e, icon: "graduation" as IconName })),
-              ...cv.projects.map((e) => ({ entry: e, icon: "trophy" as IconName })),
-              ...cv.activities.map((e) => ({ entry: e, icon: "users" as IconName })),
-            ].map(({ entry, icon }) => (
+            {[...cv.education, ...cv.projects, ...cv.activities].map((entry) => (
               <li key={entry.slug} className="flex gap-4 rounded-2xl border border-border bg-surface p-4">
-                <IconBadge name={icon} />
+                <OrgLogo src={entry.logo} org={entry.org} />
                 <div>
                   <p className="leading-snug font-semibold">{entry.title}</p>
                   <p className="mt-1 text-sm text-muted">{entry.org}</p>
