@@ -108,6 +108,7 @@ events         (id, name, section, created_at)
 - [x] About / hero with summary and buttons
 - [x] Experience carousel (swipe, arrows, dots, keyboard) + education & awards
 - [x] Company and school logos (extracted from my PDF CV, in `public/logos/`)
+- [x] Random color palette on each visit (5 palettes × light/dark, contrast-tested) + "shuffle colors" button
 - [x] Off the clock: hobbies and fun facts
 - [x] ~~Game of Life section~~ → replaced by the vision lab
 - [x] Vision lab: filters, before/after slider, kernel + convolution diagram, photo upload, live camera, with tests
