@@ -8,7 +8,7 @@ import { PALETTES } from "../lib/palettes.ts";
 import { LANGS, pickLang } from "./config.ts";
 import { getDictionary } from "./dictionaries.ts";
 
-/** Every string inside an object, with its path, e.g. ["vision.filters.blur.label", "Gaussian blur"]. */
+/** Every string inside an object, with its path, e.g. ["puzzles.games.sudoku.name", "Sudoku"]. */
 function allStrings(value: unknown, path = ""): [string, string][] {
   if (typeof value === "string") return [[path, value]];
   if (Array.isArray(value)) return value.flatMap((v, i) => allStrings(v, `${path}[${i}]`));

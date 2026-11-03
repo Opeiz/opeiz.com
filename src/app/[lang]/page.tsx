@@ -7,14 +7,14 @@ import { Icon } from "@/components/Icon";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OrgLogo } from "@/components/OrgLogo";
 import { PaletteButton } from "@/components/PaletteButton";
-import { VisionLab } from "@/components/VisionLab";
+import { PuzzleArcade } from "@/components/puzzles/PuzzleArcade";
 import { formatRange, getCv, type CV, type Entry, type IconName, type Venture } from "@/data/cv";
 import { hasLang, type Lang } from "@/i18n/config";
 import { getDictionary, t, type Dict } from "@/i18n/dictionaries";
 
 // The home page (/en, /es, /fr): one page that scrolls through 5 sections.
 // Server Component: becomes plain HTML at build time (once per language). Only the carousel,
-// the vision lab and the color button run JavaScript in the browser ("use client" inside them).
+// the puzzles and the color button run JavaScript in the browser ("use client" inside them).
 
 // Shared container: centered column, same width everywhere
 const container = "mx-auto w-full max-w-3xl px-5 md:px-8";
@@ -143,9 +143,9 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           </ul>
         </Section>
 
-        {/* 4. VISION ------------------------------------------------------ */}
-        <Section id="vision" number="03" label={dict.vision.label} title={dict.vision.title} intro={dict.vision.intro}>
-          <VisionLab text={dict.vision} />
+        {/* 4. PUZZLES ----------------------------------------------------- */}
+        <Section id="puzzles" number="03" label={dict.puzzles.label} title={dict.puzzles.title} intro={dict.puzzles.intro}>
+          <PuzzleArcade text={dict.puzzles} />
         </Section>
 
         {/* 5. UTS LABS ---------------------------------------------------- */}
@@ -226,7 +226,7 @@ function SiteHeader({ cv, dict, lang }: { cv: CV; dict: Dict; lang: Lang }) {
   const nav = [
     { href: "#experience", label: dict.nav.experience },
     { href: "#off-the-clock", label: dict.nav.offTheClock },
-    { href: "#vision", label: dict.nav.vision },
+    { href: "#puzzles", label: dict.nav.puzzles },
     { href: "#uts-labs", label: dict.nav.labs },
     { href: "#contact", label: dict.nav.contact },
   ];
@@ -275,7 +275,7 @@ function Section({
 }: {
   id: string;
   number: string;
-  label: string; // short label above the title, e.g. "Vision"
+  label: string; // short label above the title, e.g. "Puzzles"
   title: string;
   intro?: string;
   children: React.ReactNode;
