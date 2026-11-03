@@ -14,6 +14,7 @@ export type Entry = {
   slug: string; // unique id, e.g. "iter-systems" (the board squares will use it)
   title: string; // "Software Engineer"
   org: string; // "ITER Systems"
+  logo?: string; // file in /public, e.g. "/logos/iter-systems.png" (initials are shown without it)
   location: string;
   start: YearMonth;
   end: YearMonth | null; // null = "Present"
@@ -75,6 +76,7 @@ export const cv: CV = {
   experience: [
     {
       slug: "iter-systems",
+      logo: "/logos/iter-systems.png",
       title: "C++ / Python Software & Automation Engineer",
       org: "ITER Systems",
       location: "La Motte-Servolex, France",
@@ -90,6 +92,7 @@ export const cv: CV = {
     },
     {
       slug: "dassault-systemes",
+      logo: "/logos/dassault-systemes.png",
       title: "Software & API Integration Engineer",
       org: "Dassault Systèmes",
       location: "Vélizy-Villacoublay, France",
@@ -103,6 +106,7 @@ export const cv: CV = {
     },
     {
       slug: "cnrs-lab-sticc",
+      logo: "/logos/lab-sticc.png",
       title: "R&D Engineer, Data Processing",
       org: "CNRS, Lab-STICC",
       location: "Brest, France",
@@ -116,6 +120,7 @@ export const cv: CV = {
     },
     {
       slug: "utfsm-teaching",
+      logo: "/logos/utfsm.png",
       title: "Teaching Assistant, Software Engineering & AI",
       org: "UTFSM",
       location: "Valparaíso, Chile",
@@ -129,6 +134,7 @@ export const cv: CV = {
     },
     {
       slug: "robomotic",
+      logo: "/logos/robomotic.png",
       title: "Robotics Systems Integration Engineer",
       org: "Robomotic SPA",
       location: "Santiago, Chile",
@@ -145,6 +151,7 @@ export const cv: CV = {
   education: [
     {
       slug: "imt-atlantique",
+      logo: "/logos/imt-atlantique.png",
       title: "Master's-level Engineering Degree (Diplôme d'Ingénieur)",
       org: "IMT Atlantique",
       location: "Brest, France",
@@ -157,6 +164,7 @@ export const cv: CV = {
     },
     {
       slug: "utfsm",
+      logo: "/logos/utfsm.png",
       title: "Telematics Engineering Degree",
       org: "UTFSM",
       location: "Valparaíso, Chile",
@@ -172,6 +180,7 @@ export const cv: CV = {
   projects: [
     {
       slug: "thales-risc-v",
+      logo: "/logos/thales.png",
       title: "1st Prize, 4th Thales RISC-V Student Contest",
       org: "Thales, CNRS",
       location: "France",
@@ -188,6 +197,7 @@ export const cv: CV = {
   activities: [
     {
       slug: "bdi-president",
+      logo: "/logos/bdi.png",
       title: "President, International Students Office (BDI)",
       org: "IMT Atlantique",
       location: "Brest, France",
