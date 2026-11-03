@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Design tokens: every color has a name. Change it here and the
-   whole site follows. Light = warm paper, dark = deep ink.
+   Design tokens: every color has a name, and the whole site uses them.
+   These are the DEFAULT colors ("Ink & Orange"), used if JavaScript is off.
+   On each visit a random palette from src/lib/palettes.ts overrides them
+   (:root[data-palette="..."], generated in layout.tsx).
    ============================================================ */
 :root {
   --background: #f6f4ef; /* paper */
@@ -10,7 +12,7 @@
   --foreground: #17171a; /* ink */
   --muted: #5f5e5a; /* secondary text (6:1 contrast on paper) */
   --border: #e2ded4;
-  --accent: #c4410c; /* signal orange, dark enough for small text (≥4.5:1) */
+  --accent: #b93d0b; /* signal orange, dark enough for small text (≥4.5:1, see palettes.test.ts) */
   --on-accent: #ffffff; /* text on top of accent buttons */
   --accent-soft: #fbe6da; /* badges, highlights */
   --grid-dot: rgb(23 23 26 / 0.09); /* the dotted "engineering paper" */
@@ -78,7 +80,9 @@ body {
 }
 
 @media print {
-  :root {
+  /* html:root[data-palette] beats any palette selector, so paper is always plain */
+  :root,
+  html:root[data-palette] {
     --background: #ffffff;
     --surface: #ffffff;
     --foreground: #111111;
