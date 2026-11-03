@@ -14,6 +14,7 @@ import {
   TreeDeciduous,
   Trophy,
   Users,
+  Wrench,
   type LucideIcon,
 } from "lucide-react";
 import type { IconName } from "@/data/cv";
@@ -36,6 +37,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   tree: TreeDeciduous,
   rat: Rat,
   dog: Dog,
+  wrench: Wrench,
 };
 
 /** A line icon by name. Decorative: hidden from screen readers (the text next to it says it all). */
