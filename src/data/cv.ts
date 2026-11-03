@@ -44,7 +44,8 @@ export type IconName =
   | "users"
   | "cpu"
   | "tree"
-  | "rat";
+  | "rat"
+  | "dog";
 
 /** Something with an icon and a sentence: hobbies, fun facts... */
 export type IconItem = { icon: IconName; title?: string; text: string };
@@ -503,10 +504,14 @@ const source: Source = {
     {
       icon: "rat",
       text: {
-        en: "My nickname is “rata” (rat), for my love of cheese and video games.",
-        es: "Me dicen “rata”, por mi amor al queso y los videojuegos.",
-        fr: "On m'appelle « rata » (le rat), pour mon amour du fromage et des jeux vidéo.",
+        en: "My nickname is Splinter, for my love of cheese and video games.",
+        es: "Me dicen Splinter, por mi amor al queso y los videojuegos.",
+        fr: "On m'appelle Splinter, pour mon amour du fromage et des jeux vidéo.",
       },
+    },
+    {
+      icon: "dog",
+      text: { en: "Team dog, all the way.", es: "Soy team perro.", fr: "Team chien, sans hésiter." },
     },
   ],
 

@@ -1,6 +1,7 @@
 import {
   Cpu,
   Disc3,
+  Dog,
   Drone,
   Globe,
   GraduationCap,
@@ -34,6 +35,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   cpu: Cpu,
   tree: TreeDeciduous,
   rat: Rat,
+  dog: Dog,
 };
 
 /** A line icon by name. Decorative: hidden from screen readers (the text next to it says it all). */
