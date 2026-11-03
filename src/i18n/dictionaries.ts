@@ -38,7 +38,7 @@ const en = {
     description: "Software engineer in C++, Python, robotics and embedded systems, based in Chambéry, France.",
     cvTitle: "Joaquin Opazo Yentzen · CV",
   },
-  nav: { sections: "Sections", experience: "Experience", offTheClock: "Off the clock", vision: "Vision", contact: "Contact" },
+  nav: { sections: "Sections", experience: "Experience", offTheClock: "Off the clock", vision: "Vision", labs: "UTS Labs", contact: "Contact" },
   header: {
     shuffle: "Shuffle the site colors",
     shuffleTitle: "Shuffle colors",
@@ -102,6 +102,7 @@ const en = {
     cnnAfter: "thousands of kernels by itself.",
     filters: EN_FILTERS,
   },
+  labs: { label: "Founder", title: "What I'm building", comingSoon: "Coming soon" },
   contact: {
     label: "Contact",
     title: "Let's talk",
@@ -131,7 +132,7 @@ const es: Dict = {
     description: "Ingeniero de software en C++, Python, robótica y sistemas embebidos, basado en Chambéry, Francia.",
     cvTitle: "Joaquin Opazo Yentzen · CV",
   },
-  nav: { sections: "Secciones", experience: "Experiencia", offTheClock: "Fuera de horario", vision: "Visión", contact: "Contacto" },
+  nav: { sections: "Secciones", experience: "Experiencia", offTheClock: "Fuera de horario", vision: "Visión", labs: "UTS Labs", contact: "Contacto" },
   header: {
     shuffle: "Cambiar los colores del sitio",
     shuffleTitle: "Cambiar colores",
@@ -213,6 +214,7 @@ const es: Dict = {
       threshold: { label: "Umbral", explain: "Cada píxel se vuelve negro o blanco. La segmentación más simple: separar el objeto del fondo." },
     },
   },
+  labs: { label: "Fundador", title: "Lo que estoy construyendo", comingSoon: "Próximamente" },
   contact: {
     label: "Contacto",
     title: "Hablemos",
@@ -240,7 +242,7 @@ const fr: Dict = {
     description: "Ingénieur logiciel en C++, Python, robotique et systèmes embarqués, basé à Chambéry, France.",
     cvTitle: "Joaquin Opazo Yentzen · CV",
   },
-  nav: { sections: "Sections", experience: "Expérience", offTheClock: "Hors du bureau", vision: "Vision", contact: "Contact" },
+  nav: { sections: "Sections", experience: "Expérience", offTheClock: "Hors du bureau", vision: "Vision", labs: "UTS Labs", contact: "Contact" },
   header: {
     shuffle: "Changer les couleurs du site",
     shuffleTitle: "Changer les couleurs",
@@ -322,6 +324,7 @@ const fr: Dict = {
       threshold: { label: "Seuillage", explain: "Chaque pixel devient noir ou blanc. La segmentation la plus simple : séparer l'objet du fond." },
     },
   },
+  labs: { label: "Fondateur", title: "Ce que je construis", comingSoon: "Bientôt" },
   contact: {
     label: "Contact",
     title: "Parlons-en",

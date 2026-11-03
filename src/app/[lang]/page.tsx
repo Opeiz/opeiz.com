@@ -1,4 +1,4 @@
-import { ArrowUpRight, FileText, Languages, Mail, MapPin, Trophy } from "lucide-react";
+import { ArrowUpRight, FileText, FlaskConical, Languages, Mail, MapPin, Trophy } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,7 +8,7 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OrgLogo } from "@/components/OrgLogo";
 import { PaletteButton } from "@/components/PaletteButton";
 import { VisionLab } from "@/components/VisionLab";
-import { formatRange, getCv, type CV, type Entry, type IconName } from "@/data/cv";
+import { formatRange, getCv, type CV, type Entry, type IconName, type Venture } from "@/data/cv";
 import { hasLang, type Lang } from "@/i18n/config";
 import { getDictionary, t, type Dict } from "@/i18n/dictionaries";
 
@@ -59,6 +59,12 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             </div>
 
             <p className="mt-5 font-mono text-xs tracking-widest text-muted uppercase md:text-sm">{cv.role}</p>
+
+            {/* Personal slogan */}
+            <p className="mt-6 flex items-center gap-3 font-display text-2xl text-foreground italic md:text-3xl">
+              <span aria-hidden="true" className="h-px w-8 shrink-0 bg-accent md:w-12" />
+              {cv.motto}
+            </p>
 
             <div className="mt-8 max-w-2xl space-y-4 leading-relaxed text-muted md:text-lg">
               {cv.summary.map((paragraph, i) => (
@@ -142,8 +148,19 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           <VisionLab text={dict.vision} />
         </Section>
 
-        {/* 5. CONTACT ----------------------------------------------------- */}
-        <Section id="contact" number="04" label={dict.contact.label} title={dict.contact.title} intro={dict.contact.intro}>
+        {/* 5. UTS LABS ---------------------------------------------------- */}
+        {cv.ventures.length > 0 && (
+          <Section id="uts-labs" number="04" label={dict.labs.label} title={dict.labs.title}>
+            <div className="grid gap-4">
+              {cv.ventures.map((venture) => (
+                <VentureCard key={venture.name} venture={venture} comingSoon={dict.labs.comingSoon} />
+              ))}
+            </div>
+          </Section>
+        )}
+
+        {/* 6. CONTACT ----------------------------------------------------- */}
+        <Section id="contact" number="05" label={dict.contact.label} title={dict.contact.title} intro={dict.contact.intro}>
           <a
             href={`mailto:${cv.email}`}
             className="group inline-flex items-center gap-2 font-display text-3xl break-all decoration-accent decoration-2 underline-offset-8 hover:underline md:text-5xl"
@@ -210,18 +227,20 @@ function SiteHeader({ cv, dict, lang }: { cv: CV; dict: Dict; lang: Lang }) {
     { href: "#experience", label: dict.nav.experience },
     { href: "#off-the-clock", label: dict.nav.offTheClock },
     { href: "#vision", label: dict.nav.vision },
+    { href: "#uts-labs", label: dict.nav.labs },
     { href: "#contact", label: dict.nav.contact },
   ];
   return (
     <header className="sticky top-0 z-10 border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex w-full max-w-3xl items-center gap-2 px-5 md:gap-3 md:px-8">
+      {/* Wider than the content column (max-w-5xl): 5 links + flags + buttons need the room */}
+      <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-5 md:gap-3 md:px-8">
         <a href="#about" className="flex min-h-14 shrink-0 items-center font-display text-2xl">
           {cv.firstName}
           <span className="text-accent">.</span>
         </a>
         <nav aria-label={dict.nav.sections} className="min-w-0 flex-1">
           {/* mask: the links fade out at the right edge on phones, hinting they scroll */}
-          <ul className="flex gap-1 overflow-x-auto text-sm [scrollbar-width:none] [mask-image:linear-gradient(to_right,black_85%,transparent)] md:[mask-image:none] [&::-webkit-scrollbar]:hidden">
+          <ul className="flex gap-1 overflow-x-auto text-sm [scrollbar-width:none] [mask-image:linear-gradient(to_right,black_85%,transparent)] lg:[mask-image:none] [&::-webkit-scrollbar]:hidden">
             {nav.map((item) => (
               <li key={item.href} className="shrink-0">
                 <a href={item.href} className="flex min-h-11 items-center rounded-full px-3 text-muted transition-colors hover:text-foreground">
@@ -296,6 +315,37 @@ function EntryGroup({ title, entries, lang, columns = 1 }: { title: string; entr
         ))}
       </ul>
     </div>
+  );
+}
+
+/** Something I founded, with a "Coming soon" badge while it isn't public yet. */
+function VentureCard({ venture, comingSoon }: { venture: Venture; comingSoon: string }) {
+  return (
+    <article className="relative overflow-hidden rounded-3xl border border-border bg-surface p-6 shadow-sm md:p-10">
+      {/* same dotted "engineering paper" as the hero, as a quiet background */}
+      <div aria-hidden="true" className="bg-dots pointer-events-none absolute inset-0" />
+      <div className="relative flex flex-wrap items-start justify-between gap-4">
+        <div className="flex items-center gap-4">
+          <span className="inline-flex size-14 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+            <FlaskConical className="size-7" strokeWidth={1.6} aria-hidden="true" />
+          </span>
+          <div>
+            <h3 className="font-display text-3xl leading-tight md:text-4xl">{venture.name}</h3>
+            <p className="font-mono text-xs tracking-widest text-muted uppercase">{venture.role}</p>
+          </div>
+        </div>
+        {venture.status === "soon" && (
+          <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent-soft px-3 py-1 font-mono text-xs font-semibold text-accent">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-accent opacity-60 motion-safe:animate-ping" />
+              <span className="relative inline-flex size-2 rounded-full bg-accent" />
+            </span>
+            {comingSoon}
+          </span>
+        )}
+      </div>
+      <p className="relative mt-6 max-w-xl leading-relaxed text-muted md:text-lg">{venture.text}</p>
+    </article>
   );
 }
 
