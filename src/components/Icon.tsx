@@ -6,9 +6,11 @@ import {
   GraduationCap,
   Languages,
   Palette,
+  Rat,
   PaintbrushVertical,
   Sailboat,
   Swords,
+  TreeDeciduous,
   Trophy,
   Users,
   type LucideIcon,
@@ -30,6 +32,8 @@ const ICONS: Record<IconName, LucideIcon> = {
   trophy: Trophy,
   users: Users,
   cpu: Cpu,
+  tree: TreeDeciduous,
+  rat: Rat,
 };
 
 /** A line icon by name. Decorative: hidden from screen readers (the text next to it says it all). */

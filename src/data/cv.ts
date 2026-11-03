@@ -42,7 +42,9 @@ export type IconName =
   | "graduation"
   | "trophy"
   | "users"
-  | "cpu";
+  | "cpu"
+  | "tree"
+  | "rat";
 
 /** Something with an icon and a sentence: hobbies, fun facts... */
 export type IconItem = { icon: IconName; title?: string; text: string };
@@ -52,6 +54,7 @@ export type CV = {
   name: string;
   firstName: string;
   role: string;
+  motto: string; // personal slogan
   summary: string[];
   photo?: string; // file in /public, e.g. "/me.jpg"; initials are shown until it's set
   location: string;
@@ -67,7 +70,11 @@ export type CV = {
   softSkills: string[];
   hobbies: IconItem[];
   funFacts: IconItem[];
+  ventures: Venture[];
 };
+
+/** Something I founded or am building (e.g. UTS Labs). */
+export type Venture = { name: string; role: string; text: string; status: "soon" | "live" };
 
 // ---------- Types: the source (every text in every language) ----------
 
@@ -84,6 +91,7 @@ type Source = {
   name: string;
   firstName: string;
   role: L;
+  motto: L;
   summary: LList;
   location: L;
   email: string;
@@ -98,6 +106,7 @@ type Source = {
   softSkills: LList;
   hobbies: SourceIconItem[];
   funFacts: SourceIconItem[];
+  ventures: { name: string; role: L; text: L; status: Venture["status"] }[];
 };
 
 // ---------- The data ----------
@@ -110,6 +119,8 @@ const source: Source = {
     es: "Ingeniero de Software · Sistemas Embebidos · Robótica",
     fr: "Ingénieur Développement Logiciel · Systèmes Embarqués · Robotique",
   },
+  // My personal slogan
+  motto: { en: "Understand, then solve.", es: "Entender, luego resolver.", fr: "Comprendre, puis résoudre." },
   // DRAFT written from my CV: rewrite in my own voice
   summary: {
     en: [
@@ -479,43 +490,38 @@ const source: Source = {
     },
   ],
 
-  // DRAFT: add my own geeky ones ("Favorite algorithm: ...", "Coffees per day: ...")
+  // My fun facts: add new ones here (all 3 languages)
   funFacts: [
     {
-      icon: "globe",
-      text: { en: "From Valparaíso, Chile to the French Alps.", es: "De Valparaíso, Chile, a los Alpes franceses.", fr: "De Valparaíso, au Chili, jusqu'aux Alpes françaises." },
-    },
-    {
-      icon: "languages",
+      icon: "tree",
       text: {
-        en: "Spanish is my first language. English and French: C1.",
-        es: "El español es mi lengua materna. Inglés y francés: C1.",
-        fr: "L'espagnol est ma langue maternelle. Anglais et français : C1.",
+        en: "I met 5 of my 8 great-grandparents.",
+        es: "Conocí a 5 de mis 8 bisabuelos.",
+        fr: "J'ai connu 5 de mes 8 arrière-grands-parents.",
       },
     },
     {
-      icon: "graduation",
+      icon: "rat",
       text: {
-        en: "Two engineering degrees at once: one in Chile, one in France.",
-        es: "Dos títulos de ingeniero a la vez: uno en Chile y otro en Francia.",
-        fr: "Deux diplômes d'ingénieur en même temps : un au Chili, un en France.",
+        en: "My nickname is “rata” (rat), for my love of cheese and video games.",
+        es: "Me dicen “rata”, por mi amor al queso y los videojuegos.",
+        fr: "On m'appelle « rata » (le rat), pour mon amour du fromage et des jeux vidéo.",
       },
     },
+  ],
+
+  // Things I founded. status "soon" shows a "Coming soon" badge.
+  ventures: [
     {
-      icon: "trophy",
+      name: "UTS Labs",
+      role: { en: "Founder", es: "Fundador", fr: "Fondateur" },
+      // DRAFT: describe UTS Labs when it's ready to share
       text: {
-        en: "Won 1st prize at the Thales RISC-V student contest with an FPGA.",
-        es: "Gané el 1er premio del concurso estudiantil Thales RISC-V con una FPGA.",
-        fr: "1er prix du concours étudiant Thales RISC-V, avec un FPGA.",
+        en: "Something new is being built. More soon.",
+        es: "Algo nuevo se está construyendo. Pronto, más noticias.",
+        fr: "Quelque chose de nouveau se prépare. Plus d'infos bientôt.",
       },
-    },
-    {
-      icon: "users",
-      text: {
-        en: "Led 6 volunteers welcoming ~100 international students in Brest.",
-        es: "Lideré a 6 voluntarios que recibieron a ~100 estudiantes internacionales en Brest.",
-        fr: "J'ai dirigé 6 bénévoles pour accueillir ~100 étudiants internationaux à Brest.",
-      },
+      status: "soon",
     },
   ],
 };
@@ -538,6 +544,7 @@ export function getCv(lang: Lang): CV {
     name: s.name,
     firstName: s.firstName,
     role: s.role[lang],
+    motto: s.motto[lang],
     summary: s.summary[lang],
     location: s.location[lang],
     email: s.email,
@@ -552,6 +559,7 @@ export function getCv(lang: Lang): CV {
     softSkills: s.softSkills[lang],
     hobbies: s.hobbies.map((h) => iconItemIn(h, lang)),
     funFacts: s.funFacts.map((f) => iconItemIn(f, lang)),
+    ventures: s.ventures.map((v) => ({ name: v.name, role: v.role[lang], text: v.text[lang], status: v.status })),
   };
 }
 
