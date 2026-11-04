@@ -353,13 +353,16 @@ function inPublic(path?: string): path is string {
 }
 
 /**
- * A hobby card. If it has a photo, the photo fades in on hover. Phones have no hover,
+ * A hobby card. If it has a photo, on hover the text fades out and the photo fades in
+ * (the icon stays, so you still know which hobby it is). Phones have no hover,
  * so the card is focusable: a tap (or Tab on a keyboard) shows the photo too.
  */
 function HobbyCard({ hobby }: { hobby: IconItem }) {
   const photo = inPublic(hobby.image) ? hobby.image : null;
-  // "show" = the classes that apply while hovered or focused
+  // Classes that apply while the card is hovered or focused
   const show = "group-hover:opacity-100 group-focus:opacity-100";
+  const hide = photo ? "group-hover:opacity-0 group-focus:opacity-0" : "";
+  const fade = "transition-opacity duration-300 motion-reduce:transition-none";
   return (
     <li
       tabIndex={photo ? 0 : undefined}
@@ -372,20 +375,24 @@ function HobbyCard({ hobby }: { hobby: IconItem }) {
             alt={hobby.title ?? ""}
             fill
             sizes="(min-width: 768px) 33vw, 100vw"
-            className={`-z-10 object-cover opacity-0 transition-opacity duration-300 motion-reduce:transition-none ${show}`}
+            className={`-z-10 object-cover opacity-0 ${fade} ${show}`}
           />
-          {/* Dark layer, darkest at the top (where the text starts), so white text stays readable even on bright photos */}
+          {/* Dark shadow layer over the photo, darkest at the top */}
           <span
             aria-hidden="true"
-            className={`absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/60 to-black/40 opacity-0 transition-opacity duration-300 motion-reduce:transition-none ${show}`}
+            className={`absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/60 to-black/40 opacity-0 ${fade} ${show}`}
           />
         </>
       )}
-      <IconBadge name={hobby.icon} large />
-      <p className={`mt-4 font-semibold transition-colors ${photo ? "group-hover:text-white group-focus:text-white" : ""}`}>{hobby.title}</p>
-      <p className={`mt-1 text-sm leading-relaxed text-muted transition-colors ${photo ? "group-hover:text-white/85 group-focus:text-white/85" : ""}`}>
-        {hobby.text}
-      </p>
+      {/* A soft shadow so the icon stands out on any photo */}
+      <span className={`inline-flex rounded-xl ${photo ? "group-hover:shadow-lg group-focus:shadow-lg" : ""}`}>
+        <IconBadge name={hobby.icon} large />
+      </span>
+      {/* The text only hides visually: screen readers still read it */}
+      <div className={`${fade} ${hide}`}>
+        <p className="mt-4 font-semibold">{hobby.title}</p>
+        <p className="mt-1 text-sm leading-relaxed text-muted">{hobby.text}</p>
+      </div>
     </li>
   );
 }
