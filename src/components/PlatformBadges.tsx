@@ -11,12 +11,12 @@ const LOGOS: Record<NonNullable<Platform["logo"]>, SimpleIcon> = { hackerrank: s
  * "Where I train": one card per coding site. Drawn in the site's own style (not shields.io
  * images), except CodeAbbey's banner, which is a LIVE image that updates by itself.
  */
-export function PlatformBadges({ platforms, text }: { platforms: Platform[]; text: Dict["puzzles"] }) {
+export function PlatformBadges({ platforms, text }: { platforms: Platform[]; text: Dict["experience"] }) {
   if (platforms.length === 0) return null;
   return (
-    <div className="mt-14">
+    <div className="mt-10">
       <h3 className="font-mono text-xs tracking-widest text-muted uppercase">{text.platforms}</h3>
-      <p className="mt-2 mb-5 text-sm leading-relaxed text-muted md:text-base">{text.platformsIntro}</p>
+      <p className="mt-2 mb-4 text-sm leading-relaxed text-muted">{text.platformsIntro}</p>
       <ul className="grid gap-3 md:grid-cols-3">
         {platforms.map((p) => (
           <li key={p.name} className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-5 transition-colors hover:border-accent/40">

@@ -542,22 +542,6 @@ const source: Source = {
   // Where I practice problem solving (shown under the puzzle)
   platforms: [
     {
-      name: "HackerRank",
-      url: "https://www.hackerrank.com/ja_opazoy",
-      logo: "hackerrank",
-      text: { en: "Verified skill certificates", es: "Certificados de habilidades verificados", fr: "Certificats de compétences vérifiés" },
-      certificates: [
-        {
-          name: { en: "Python (Basic)", es: "Python (Básico)", fr: "Python (Basique)" },
-          url: "https://www.hackerrank.com/certificates/dd4a8a43d886",
-        },
-        {
-          name: { en: "Software Engineer", es: "Ingeniero de Software", fr: "Ingénieur Logiciel" },
-          url: "https://www.hackerrank.com/certificates/c4ac9dacea2e",
-        },
-      ],
-    },
-    {
       name: "CodinGame",
       url: "https://www.codingame.com/profile/Opeiz",
       text: {
@@ -573,6 +557,22 @@ const source: Source = {
       text: { en: "Classic programming problems", es: "Problemas de programación clásicos", fr: "Problèmes de programmation classiques" },
       banner: { src: "https://www.codeabbey.com/index/user_banner/tgn.png", width: 200, height: 60 },
       certificates: [],
+    },
+    {
+      name: "HackerRank",
+      url: "https://www.hackerrank.com/ja_opazoy",
+      logo: "hackerrank",
+      text: { en: "Verified skill certificates", es: "Certificados de habilidades verificados", fr: "Certificats de compétences vérifiés" },
+      certificates: [
+        {
+          name: { en: "Python (Basic)", es: "Python (Básico)", fr: "Python (Basique)" },
+          url: "https://www.hackerrank.com/certificates/dd4a8a43d886",
+        },
+        {
+          name: { en: "Software Engineer", es: "Ingeniero de Software", fr: "Ingénieur Logiciel" },
+          url: "https://www.hackerrank.com/certificates/c4ac9dacea2e",
+        },
+      ],
     },
   ],
 

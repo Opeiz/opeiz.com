@@ -110,6 +110,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
             <EntryGroup title={dict.experience.awards} entries={cv.projects} lang={lang} />
             <EntryGroup title={dict.experience.leadership} entries={cv.activities} lang={lang} />
           </div>
+          <PlatformBadges platforms={cv.platforms} text={dict.experience} />
         </Section>
 
         {/* 3. OFF THE CLOCK ----------------------------------------------- */}
@@ -147,7 +148,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* 4. PUZZLES ----------------------------------------------------- */}
         <Section id="puzzles" number="03" label={dict.puzzles.label} title={dict.puzzles.title} intro={dict.puzzles.intro}>
           <PuzzleArcade text={dict.puzzles} />
-          <PlatformBadges platforms={cv.platforms} text={dict.puzzles} />
         </Section>
 
         {/* 5. UTS LABS ---------------------------------------------------- */}
