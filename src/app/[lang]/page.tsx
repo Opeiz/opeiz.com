@@ -374,10 +374,10 @@ function HobbyCard({ hobby }: { hobby: IconItem }) {
             sizes="(min-width: 768px) 33vw, 100vw"
             className={`-z-10 object-cover opacity-0 transition-opacity duration-300 motion-reduce:transition-none ${show}`}
           />
-          {/* Dark gradient at the top (where the text is) so the white text stays readable on any photo */}
+          {/* Dark layer, darkest at the top (where the text starts), so white text stays readable even on bright photos */}
           <span
             aria-hidden="true"
-            className={`absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/45 to-black/5 opacity-0 transition-opacity duration-300 motion-reduce:transition-none ${show}`}
+            className={`absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/60 to-black/40 opacity-0 transition-opacity duration-300 motion-reduce:transition-none ${show}`}
           />
         </>
       )}
