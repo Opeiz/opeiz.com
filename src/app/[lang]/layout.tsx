@@ -46,6 +46,9 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       // The palette script sets data-palette before React starts, so the HTML differs
       // from the server's on purpose. This tells React not to warn about it.
       suppressHydrationWarning
+      // We use smooth scrolling for #links (globals.css). This tells Next.js to turn it off
+      // while changing pages (e.g. /en → /cv), so new pages open at the top instantly.
+      data-scroll-behavior="smooth"
     >
       <head>
         {/* All palettes as CSS, generated from src/lib/palettes.ts */}
