@@ -76,13 +76,26 @@ export function paletteCss(): string {
 }
 
 /**
+ * Pick the next palette: random, but never the one shown last (so every refresh looks different).
+ * `random` is a parameter so tests can control it.
+ */
+export function nextPalette(ids: string[], last: string | null, random: () => number = Math.random): string {
+  const others = ids.filter((id) => id !== last);
+  return others[Math.floor(random() * others.length)];
+}
+
+/**
  * Tiny script that runs in <head> BEFORE the page is painted (so colors never "flash").
- * Picks a random palette, but keeps the same one for the rest of this tab (sessionStorage).
+ * On EVERY page load it picks a new palette with nextPalette(). sessionStorage only remembers
+ * the last one shown, so the next load can avoid it.
+ * Clicking a link inside the site (e.g. to /cv) doesn't reload the page, so colors stay while you browse.
  */
 export function paletteScript(): string {
   const ids = JSON.stringify(PALETTES.map((p) => p.id));
-  return `(function(){var ids=${ids},id;try{id=sessionStorage.getItem("palette")}catch(e){}
-if(ids.indexOf(id)<0){id=ids[Math.floor(Math.random()*ids.length)];try{sessionStorage.setItem("palette",id)}catch(e){}}
+  // nextPalette.toString() puts the SAME function (the one the tests check) into the script
+  return `(function(){var ids=${ids},last=null;try{last=sessionStorage.getItem("palette")}catch(e){}
+var id=(${nextPalette.toString()})(ids,last,Math.random);
+try{sessionStorage.setItem("palette",id)}catch(e){}
 document.documentElement.dataset.palette=id})()`;
 }
 

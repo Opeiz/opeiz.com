@@ -21,7 +21,7 @@ export function PaletteButton({ text }: { text: Text }) {
     const next = others[Math.floor(Math.random() * others.length)];
     html.dataset.palette = next.id;
     try {
-      sessionStorage.setItem("palette", next.id); // keep it for this tab
+      sessionStorage.setItem("palette", next.id); // remember it, so the next refresh picks a different one
     } catch {
       // storage can be blocked (private mode): the colors still change, they just aren't remembered
     }

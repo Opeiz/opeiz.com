@@ -1,7 +1,7 @@
 // Every random palette must stay readable. Run with: npm test
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { contrast, PALETTES, type Tokens } from "./palettes.ts";
+import { contrast, nextPalette, paletteScript, PALETTES, type Tokens } from "./palettes.ts";
 
 test("contrast math: black on white is 21, same color is 1", () => {
   assert.equal(Math.round(contrast("#000000", "#ffffff")), 21);
@@ -35,4 +35,29 @@ for (const palette of PALETTES) {
 test("palette ids are unique", () => {
   const ids = PALETTES.map((p) => p.id);
   assert.equal(new Set(ids).size, ids.length);
+});
+
+test("nextPalette: never repeats the last palette", () => {
+  const ids = PALETTES.map((p) => p.id);
+  for (const last of ids)
+    for (const r of [0, 0.3, 0.6, 0.999]) assert.notEqual(nextPalette(ids, last, () => r), last);
+  assert.ok(ids.includes(nextPalette(ids, null)), "first visit: any palette");
+});
+
+test("palette script: 20 refreshes in a row, the colors change every time", () => {
+  // A fake browser: just the two things the script touches
+  const storage = new Map<string, string>();
+  const fake = {
+    sessionStorage: { getItem: (k: string) => storage.get(k) ?? null, setItem: (k: string, v: string) => void storage.set(k, v) },
+    document: { documentElement: { dataset: {} as Record<string, string> } },
+  };
+  const run = new Function("sessionStorage", "document", paletteScript());
+  let previous = "";
+  for (let i = 0; i < 20; i++) {
+    run(fake.sessionStorage, fake.document); // = one refresh
+    const now = fake.document.documentElement.dataset.palette;
+    assert.ok(PALETTES.some((p) => p.id === now), `valid palette: ${now}`);
+    assert.notEqual(now, previous, `refresh ${i + 1} changed the colors`);
+    previous = now;
+  }
 });
