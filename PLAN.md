@@ -164,6 +164,6 @@ The first version was a board game ("Roll for the CV"): pick a token, roll a loa
 
 ## Fun fact list
 - Conoci 5 de 8 bisabuelos
-- Me dicen Splinter, por mi amor al queso y los videojuegos
+- Uno de los miles sobrenombres es Splinter, por mi amor al queso y los videojuegos
 - Soy team perro
-- 
+- Me encanta saber como las cosas funcionan, por eso desarmo todo

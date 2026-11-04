@@ -543,7 +543,7 @@ const source: Source = {
   platforms: [
     {
       name: "CodinGame",
-      url: "https://www.codingame.com/profile/Opeiz",
+      url: "https://www.codingame.com/profile/fc82c2dc7dc4d51fd9976ce6249ee7be6996126",
       text: {
         en: "Bot programming and algorithm puzzles",
         es: "Programación de bots y puzzles de algoritmos",
@@ -554,7 +554,11 @@ const source: Source = {
     {
       name: "CodeAbbey",
       url: "https://www.codeabbey.com/index/user_profile/tgn",
-      text: { en: "Classic programming problems", es: "Problemas de programación clásicos", fr: "Problèmes de programmation classiques" },
+      text: { 
+        en: "Classic programming problems", 
+        es: "Problemas de programación clásicos", 
+        fr: "Problèmes de programmation classiques" 
+      },
       banner: { src: "https://www.codeabbey.com/index/user_banner/tgn.png", width: 200, height: 60 },
       certificates: [],
     },
@@ -562,7 +566,11 @@ const source: Source = {
       name: "HackerRank",
       url: "https://www.hackerrank.com/ja_opazoy",
       logo: "hackerrank",
-      text: { en: "Verified skill certificates", es: "Certificados de habilidades verificados", fr: "Certificats de compétences vérifiés" },
+      text: { 
+        en: "Verified skill certificates", 
+        es: "Certificados de habilidades verificados", 
+        fr: "Certificats de compétences vérifiés" 
+      },
       certificates: [
         {
           name: { en: "Python (Basic)", es: "Python (Básico)", fr: "Python (Basique)" },
