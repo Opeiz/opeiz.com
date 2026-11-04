@@ -49,7 +49,12 @@ export type IconName =
   | "wrench";
 
 /** Something with an icon and a sentence: hobbies, fun facts... */
-export type IconItem = { icon: IconName; title?: string; text: string };
+export type IconItem = {
+  icon: IconName;
+  title?: string;
+  text: string;
+  image?: string; // photo in /public shown on hover (hobbies). Ignored until the file exists.
+};
 
 export type CV = {
   lang: Lang;
@@ -97,7 +102,7 @@ export type Venture = { name: string; role: string; text: string; status: "soon"
 type LList = Record<Lang, string[]>; // a list of texts per language
 
 type SourceEntry = Omit<Entry, "title" | "location" | "highlights"> & { title: L; location: L; highlights: LList };
-type SourceIconItem = { icon: IconName; title?: L; text: L };
+type SourceIconItem = { icon: IconName; title?: L; text: L; image?: string };
 
 /**
  * The full source shape. "const source: Source" makes TypeScript CHECK every object
@@ -450,9 +455,11 @@ const source: Source = {
   },
 
   // DRAFT: make these sound like me
+  // image: drop a photo with that name in public/hobbies/ and it shows on hover (no code change)
   hobbies: [
     {
       icon: "sailboat",
+      image: "/hobbies/sailing.jpg",
       title: { en: "Sailing", es: "Vela", fr: "Voile" },
       text: {
         en: "Skipper with the French Sailing Federation.",
@@ -462,6 +469,7 @@ const source: Source = {
     },
     {
       icon: "drone",
+      image: "/hobbies/fpv-drone.jpg",
       title: { en: "FPV drone racing", es: "Carreras de drones FPV", fr: "Course de drones FPV" },
       text: {
         en: "Racing small drones in first-person view, through goggles.",
@@ -471,6 +479,7 @@ const source: Source = {
     },
     {
       icon: "palette",
+      image: "/hobbies/graphic-design.jpg",
       title: { en: "Graphic design", es: "Diseño gráfico", fr: "Design graphique" },
       text: {
         en: "My creative side, away from the code.",
@@ -480,6 +489,7 @@ const source: Source = {
     },
     {
       icon: "swords",
+      image: "/hobbies/riftbound.jpg",
       title: { en: "Riftbound player", es: "Jugador de Riftbound", fr: "Joueur de Riftbound" },
       text: {
         en: "The League of Legends trading card game: building decks and planning every turn.",
@@ -489,6 +499,7 @@ const source: Source = {
     },
     {
       icon: "brush",
+      image: "/hobbies/miniatures.jpg",
       title: { en: "Miniature painting", es: "Pintura de miniaturas", fr: "Peinture de figurines" },
       text: {
         en: "Bringing tiny figures to life, one brushstroke at a time.",
@@ -498,6 +509,7 @@ const source: Source = {
     },
     {
       icon: "disc",
+      image: "/hobbies/dj.jpg",
       title: { en: "DJ", es: "DJ", fr: "DJ" },
       text: {
         en: "Mixing tracks and reading the room from behind the decks.",
@@ -607,7 +619,7 @@ function entryIn(entry: SourceEntry, lang: Lang): Entry {
 }
 
 function iconItemIn(item: SourceIconItem, lang: Lang): IconItem {
-  return { icon: item.icon, title: item.title?.[lang], text: item.text[lang] };
+  return { icon: item.icon, title: item.title?.[lang], text: item.text[lang], image: item.image };
 }
 
 /** The whole CV in one language. Pages call getCv("fr") and get plain strings. */
