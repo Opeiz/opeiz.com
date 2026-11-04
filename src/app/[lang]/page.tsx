@@ -6,7 +6,6 @@ import { ExperienceCarousel } from "@/components/ExperienceCarousel";
 import { Icon } from "@/components/Icon";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OrgLogo } from "@/components/OrgLogo";
-import { PaletteButton } from "@/components/PaletteButton";
 import { PlatformBadges } from "@/components/PlatformBadges";
 import { PuzzleArcade } from "@/components/puzzles/PuzzleArcade";
 import { formatRange, getCv, type CV, type Entry, type IconName, type Venture } from "@/data/cv";
@@ -253,7 +252,8 @@ function SiteHeader({ cv, dict, lang }: { cv: CV; dict: Dict; lang: Lang }) {
           </ul>
         </nav>
         <LanguageSwitcher lang={lang} label={dict.header.language} />
-        <PaletteButton text={{ ...dict.header, names: dict.palettes }} />
+        {/* Color button hidden (colors already change on every refresh). To bring it back:
+            import PaletteButton and add <PaletteButton text={{ ...dict.header, names: dict.palettes }} /> */}
         <Link
           href={`/${lang}/cv`}
           className="relative inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-sm font-medium transition after:absolute after:-inset-1 after:content-[''] hover:border-foreground/30"
