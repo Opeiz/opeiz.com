@@ -69,6 +69,10 @@ const en = {
     solved: "Solved in {time}. Nice!",
     lightUpControls: "Click to place a bulb, right-click to mark an X (a note: no bulb here). On a phone, tap to cycle bulb → X → empty. Keyboard: Space = bulb, X = mark.",
     more: "Want more puzzles? Try",
+    platforms: "Where I train",
+    platformsIntro: "Puzzles aren't only a hobby: I also practice on coding challenge sites.",
+    certificates: "Certificates",
+    liveBanner: "Live stats from {name}",
   },
   labs: { label: "Founder", title: "What I'm building", comingSoon: "Coming soon" },
   contact: {
@@ -155,6 +159,10 @@ const es: Dict = {
     solved: "¡Resuelto en {time}! Bien hecho.",
     lightUpControls: "Clic para poner una ampolleta, clic derecho para marcar una X (una nota: aquí no va). En el celular, toca para pasar de ampolleta → X → vacía. Teclado: Espacio = ampolleta, X = marca.",
     more: "¿Quieres más puzzles? Prueba",
+    platforms: "Dónde entreno",
+    platformsIntro: "Los puzzles no son solo un hobby: también practico en sitios de desafíos de programación.",
+    certificates: "Certificados",
+    liveBanner: "Estadísticas en vivo de {name}",
   },
   labs: { label: "Fundador", title: "Lo que estoy construyendo", comingSoon: "Próximamente" },
   contact: {
@@ -239,6 +247,10 @@ const fr: Dict = {
     solved: "Résolu en {time}. Bravo !",
     lightUpControls: "Cliquez pour placer une ampoule, clic droit pour marquer un X (une note : pas d'ampoule ici). Sur téléphone, touchez pour passer de ampoule → X → vide. Clavier : Espace = ampoule, X = marque.",
     more: "Envie d'autres puzzles ? Essayez",
+    platforms: "Où je m'entraîne",
+    platformsIntro: "Les puzzles ne sont pas qu'un loisir : je m'entraîne aussi sur des sites de défis de programmation.",
+    certificates: "Certificats",
+    liveBanner: "Statistiques en direct de {name}",
   },
   labs: { label: "Fondateur", title: "Ce que je construis", comingSoon: "Bientôt" },
   contact: {

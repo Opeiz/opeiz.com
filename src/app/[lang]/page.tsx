@@ -7,6 +7,7 @@ import { Icon } from "@/components/Icon";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OrgLogo } from "@/components/OrgLogo";
 import { PaletteButton } from "@/components/PaletteButton";
+import { PlatformBadges } from "@/components/PlatformBadges";
 import { PuzzleArcade } from "@/components/puzzles/PuzzleArcade";
 import { formatRange, getCv, type CV, type Entry, type IconName, type Venture } from "@/data/cv";
 import { hasLang, type Lang } from "@/i18n/config";
@@ -146,6 +147,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         {/* 4. PUZZLES ----------------------------------------------------- */}
         <Section id="puzzles" number="03" label={dict.puzzles.label} title={dict.puzzles.title} intro={dict.puzzles.intro}>
           <PuzzleArcade text={dict.puzzles} />
+          <PlatformBadges platforms={cv.platforms} text={dict.puzzles} />
         </Section>
 
         {/* 5. UTS LABS ---------------------------------------------------- */}

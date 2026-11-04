@@ -72,7 +72,21 @@ export type CV = {
   softSkills: string[];
   hobbies: IconItem[];
   funFacts: IconItem[];
+  platforms: Platform[];
   ventures: Venture[];
+};
+
+/**
+ * A coding practice site (HackerRank, CodinGame...). `logo` picks a brand logo in the page;
+ * `banner` is a LIVE image the site itself draws (it updates by itself as I solve more).
+ */
+export type Platform = {
+  name: string;
+  url: string;
+  logo?: "hackerrank"; // brands without a square logo show their initials
+  text: string;
+  banner?: { src: string; width: number; height: number };
+  certificates: { name: string; url: string }[];
 };
 
 /** Something I founded or am building (e.g. UTS Labs). */
@@ -108,6 +122,7 @@ type Source = {
   softSkills: LList;
   hobbies: SourceIconItem[];
   funFacts: SourceIconItem[];
+  platforms: (Omit<Platform, "text" | "certificates"> & { text: L; certificates: { name: L; url: string }[] })[];
   ventures: { name: string; role: L; text: L; status: Venture["status"] }[];
 };
 
@@ -524,6 +539,43 @@ const source: Source = {
     },
   ],
 
+  // Where I practice problem solving (shown under the puzzle)
+  platforms: [
+    {
+      name: "HackerRank",
+      url: "https://www.hackerrank.com/ja_opazoy",
+      logo: "hackerrank",
+      text: { en: "Verified skill certificates", es: "Certificados de habilidades verificados", fr: "Certificats de compétences vérifiés" },
+      certificates: [
+        {
+          name: { en: "Python (Basic)", es: "Python (Básico)", fr: "Python (Basique)" },
+          url: "https://www.hackerrank.com/certificates/dd4a8a43d886",
+        },
+        {
+          name: { en: "Software Engineer", es: "Ingeniero de Software", fr: "Ingénieur Logiciel" },
+          url: "https://www.hackerrank.com/certificates/c4ac9dacea2e",
+        },
+      ],
+    },
+    {
+      name: "CodinGame",
+      url: "https://www.codingame.com/profile/Opeiz",
+      text: {
+        en: "Bot programming and algorithm puzzles",
+        es: "Programación de bots y puzzles de algoritmos",
+        fr: "Programmation de bots et puzzles d'algorithmes",
+      },
+      certificates: [],
+    },
+    {
+      name: "CodeAbbey",
+      url: "https://www.codeabbey.com/index/user_profile/tgn",
+      text: { en: "Classic programming problems", es: "Problemas de programación clásicos", fr: "Problèmes de programmation classiques" },
+      banner: { src: "https://www.codeabbey.com/index/user_banner/tgn.png", width: 200, height: 60 },
+      certificates: [],
+    },
+  ],
+
   // Things I founded. status "soon" shows a "Coming soon" badge.
   ventures: [
     {
@@ -573,6 +625,11 @@ export function getCv(lang: Lang): CV {
     softSkills: s.softSkills[lang],
     hobbies: s.hobbies.map((h) => iconItemIn(h, lang)),
     funFacts: s.funFacts.map((f) => iconItemIn(f, lang)),
+    platforms: s.platforms.map((p) => ({
+      ...p,
+      text: p.text[lang],
+      certificates: p.certificates.map((c) => ({ name: c.name[lang], url: c.url })),
+    })),
     ventures: s.ventures.map((v) => ({ name: v.name, role: v.role[lang], text: v.text[lang], status: v.status })),
   };
 }
