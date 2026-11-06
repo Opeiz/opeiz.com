@@ -122,11 +122,16 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
           title={dict.offTheClock.title}
           intro={dict.offTheClock.intro}
         >
-          <ul className="grid gap-3 md:grid-cols-3">
-            {cv.hobbies.map((hobby) => (
-              <HobbyCard key={hobby.text} hobby={hobby} />
+          {/* Rows of 3 on PC: hovering a card makes it wider and its 2 neighbors narrower */}
+          <div className="grid gap-3">
+            {rowsOf(cv.hobbies, 3).map((row) => (
+              <ul key={row[0].text} className="group/row flex flex-col gap-3 md:flex-row">
+                {row.map((hobby) => (
+                  <HobbyCard key={hobby.text} hobby={hobby} />
+                ))}
+              </ul>
             ))}
-          </ul>
+          </div>
 
           <h3 className="mt-14 mb-5 font-mono text-xs tracking-widest text-muted uppercase">{dict.offTheClock.funFacts}</h3>
           <ul className="grid gap-x-8 gap-y-4 md:grid-cols-2">
@@ -347,6 +352,11 @@ function VentureCard({ venture, comingSoon }: { venture: Venture; comingSoon: st
 }
 
 /** Icon inside a soft accent-colored rounded square. */
+/** [a, b, c, d, e] → [[a, b, c], [d, e]] */
+function rowsOf<T>(items: T[], size: number): T[][] {
+  return Array.from({ length: Math.ceil(items.length / size) }, (_, i) => items.slice(i * size, i * size + size));
+}
+
 /** Does this file exist in /public? Checked while the page is built, so a missing photo is just skipped. */
 function inPublic(path?: string): path is string {
   return !!path && existsSync(join(process.cwd(), "public", path));
@@ -366,7 +376,11 @@ function HobbyCard({ hobby }: { hobby: IconItem }) {
   return (
     <li
       tabIndex={photo ? 0 : undefined}
-      className="group relative isolate min-h-44 overflow-hidden rounded-2xl border border-border bg-surface p-5 outline-none transition-colors hover:border-accent/40 focus-visible:ring-2 focus-visible:ring-accent"
+      // md:flex-1 = equal widths (weight 1 each). A card with a photo grows to weight 2.2 on hover/focus,
+      // so the others shrink. Fixed height on PC, so the page below never jumps.
+      className={`group relative isolate min-h-44 overflow-hidden rounded-2xl border border-border bg-surface p-5 outline-none transition-[color,border-color,flex-grow] duration-300 hover:border-accent/40 focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none md:h-56 md:min-w-0 md:flex-1 ${
+        photo ? "md:hover:grow-[2.2] md:focus:grow-[2.2]" : ""
+      }`}
     >
       {photo && (
         <>
@@ -391,8 +405,9 @@ function HobbyCard({ hobby }: { hobby: IconItem }) {
       </span>
       {/* The text only hides visually: screen readers still read it */}
       <div className={`${fade} ${hide}`}>
-        <p className="mt-4 font-semibold">{hobby.title}</p>
-        <p className="mt-1 text-sm leading-relaxed text-muted">{hobby.text}</p>
+        {/* While a card in the row is hovered, the narrow ones cut long text with "…" */}
+        <p className="mt-4 font-semibold md:group-hover/row:truncate">{hobby.title}</p>
+        <p className="mt-1 text-sm leading-relaxed text-muted md:group-hover/row:line-clamp-4">{hobby.text}</p>
       </div>
     </li>
   );
