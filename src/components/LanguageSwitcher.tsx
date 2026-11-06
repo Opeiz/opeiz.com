@@ -1,5 +1,4 @@
 import { ChevronDown } from "lucide-react";
-import Link from "next/link";
 import { LANG_NAMES, LANGS, type Lang } from "@/i18n/config";
 
 // Flags as small SVG drawings (Windows can't show flag emojis, it shows "FR" letters instead).
@@ -39,6 +38,8 @@ function Flag({ lang, className = "" }: { lang: Lang; className?: string }) {
  * - phone: one flag button that opens a small menu (<details>: opens/closes with no JavaScript)
  */
 export function LanguageSwitcher({ lang, path = "", label }: { lang: Lang; path?: "" | "/cv"; label: string }) {
+  // Plain <a>, not <Link>: changing language is a full page load on purpose. The whole layout
+  // changes (<html lang>, the palette script in <head>), and React can't re-run a <script> in the browser.
   const href = (l: Lang) => `/${l}${path}`;
 
   return (
@@ -47,7 +48,7 @@ export function LanguageSwitcher({ lang, path = "", label }: { lang: Lang; path?
       <ul className="hidden items-center gap-1 md:flex">
         {LANGS.map((l) => (
           <li key={l}>
-            <Link
+            <a
               href={href(l)}
               hrefLang={l}
               lang={l}
@@ -59,7 +60,7 @@ export function LanguageSwitcher({ lang, path = "", label }: { lang: Lang; path?
               }`}
             >
               <Flag lang={l} />
-            </Link>
+            </a>
           </li>
         ))}
       </ul>
@@ -76,7 +77,7 @@ export function LanguageSwitcher({ lang, path = "", label }: { lang: Lang; path?
         <ul className="absolute right-0 z-20 mt-2 w-40 overflow-hidden rounded-2xl border border-border bg-surface p-1 shadow-lg">
           {LANGS.map((l) => (
             <li key={l}>
-              <Link
+              <a
                 href={href(l)}
                 hrefLang={l}
                 lang={l}
@@ -85,7 +86,7 @@ export function LanguageSwitcher({ lang, path = "", label }: { lang: Lang; path?
               >
                 <Flag lang={l} />
                 {LANG_NAMES[l]}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
