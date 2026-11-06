@@ -114,6 +114,7 @@ type Source = {
   role: L;
   motto: L;
   summary: LList;
+  photo?: string;
   location: L;
   email: string;
   links: { label: string; href: string }[];
@@ -161,7 +162,7 @@ const source: Source = {
       "J'aime transformer un travail manuel et désordonné en systèmes propres et automatisés, et j'utilise des agents d'IA chaque jour pour y arriver plus vite.",
     ],
   },
-  // photo: "/me.jpg", // TODO: add a square photo to /public and uncomment
+  photo: "/me.jpg", // square, cropped around my face from ProfilePicture.jpeg
   location: { en: "Chambéry, France", es: "Chambéry, Francia", fr: "Chambéry, France" },
   email: "ja.opazoy@gmail.com",
   links: [
@@ -632,6 +633,7 @@ export function getCv(lang: Lang): CV {
     role: s.role[lang],
     motto: s.motto[lang],
     summary: s.summary[lang],
+    photo: s.photo,
     location: s.location[lang],
     email: s.email,
     links: s.links,

@@ -23,6 +23,9 @@ import { getDictionary, t, type Dict } from "@/i18n/dictionaries";
 // Shared container: centered column, same width everywhere
 const container = "mx-auto w-full max-w-3xl px-5 md:px-8";
 
+/** Waving Chile and France flags under my photo. Switch to true to show them. */
+const SHOW_FLAGS = false;
+
 export default async function Home({ params }: PageProps<"/[lang]">) {
   const { lang } = await params;
   if (!hasLang(lang)) notFound();
@@ -58,13 +61,15 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   {cv.name}
                 </h1>
               </div>
-              {/* Photo, with the flags of my two homes waving under it */}
+              {/* Photo, with the flags of my two homes waving under it (when SHOW_FLAGS is on) */}
               <div className="flex shrink-0 flex-col items-center gap-3">
                 <Avatar cv={cv} />
-                <div className="flex gap-3">
-                  <WavingFlag country="cl" label={dict.hero.flagChile} />
-                  <WavingFlag country="fr" label={dict.hero.flagFrance} />
-                </div>
+                {SHOW_FLAGS && (
+                  <div className="flex gap-3">
+                    <WavingFlag country="cl" label={dict.hero.flagChile} />
+                    <WavingFlag country="fr" label={dict.hero.flagFrance} />
+                  </div>
+                )}
               </div>
             </div>
 
