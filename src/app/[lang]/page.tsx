@@ -375,7 +375,8 @@ function HobbyCard({ hobby }: { hobby: IconItem }) {
             alt={hobby.title ?? ""}
             fill
             sizes="(min-width: 768px) 33vw, 100vw"
-            className={`-z-10 object-cover opacity-0 ${fade} ${show}`}
+            // object-[50%_30%]: crop a bit above the middle, where faces usually are
+            className={`-z-10 object-cover object-[50%_30%] opacity-0 ${fade} ${show}`}
           />
           {/* Dark shadow layer over the photo, darkest at the top */}
           <span
