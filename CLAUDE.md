@@ -1,6 +1,6 @@
 # Project context for Claude
 
-This is my personal CV/portfolio site: a **professional one-page site** (About → Experience carousel → Off the clock → Puzzles (Light Up) → UTS Labs → Contact) plus a printable classic CV at `/cv`, in English, Spanish and French (`/en`, `/es`, `/fr`). The full plan is in `PLAN.md`. Read it before suggesting changes.
+This is my personal CV/portfolio site: a **professional one-page site** (About → Experience carousel → Off the clock → Puzzles (line puzzles) → UTS Labs → Contact) plus a printable classic CV at `/cv`, in English, Spanish and French (`/en`, `/es`, `/fr`). The full plan is in `PLAN.md`. Read it before suggesting changes.
 
 ## About me
 - I'm **learning full stack** with this project. Explain concepts as we go (what, why, and how), and prefer teaching over just dumping code.

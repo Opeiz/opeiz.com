@@ -1,6 +1,6 @@
 # Joaquin Opazo Yentzen · Personal site
 
-My CV and portfolio, in English, Español and Français: a one-page site with my experience, a bit about me off the clock, a Light Up logic puzzle, and a way to get in touch.
+My CV and portfolio, in English, Español and Français: a one-page site with my experience, a bit about me off the clock, line puzzles (maze, hexagons, colors, triangles), and a way to get in touch.
 
 Prefer paper? A classic, printable CV lives at [`/cv`](https://opeiz-com.vercel.app/cv).
 
@@ -24,7 +24,7 @@ npm run build      # same build Vercel runs
 | `src/app/[lang]/page.tsx` | The one-page site |
 | `src/app/[lang]/cv/page.tsx` | The printable classic CV |
 | `src/components/` | Experience carousel, puzzles, language switcher |
-| `src/lib/puzzles/` | Light Up generator and rule checks (pure functions + tests) |
+| `src/lib/puzzles/` | Line puzzle generators and rule checks (pure functions + tests) |
 
 ## Roadmap
 See [PLAN.md](PLAN.md).
