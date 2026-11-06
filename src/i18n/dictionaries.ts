@@ -28,6 +28,8 @@ const en = {
     prize: "1st prize, Thales RISC-V",
     getInTouch: "Get in touch",
     classicCv: "Classic CV",
+    flagChile: "Flag of Chile",
+    flagFrance: "Flag of France",
   },
   experience: {
     label: "Experience",
@@ -117,6 +119,8 @@ const es: Dict = {
     prize: "1er premio, Thales RISC-V",
     getInTouch: "Contáctame",
     classicCv: "CV clásico",
+    flagChile: "Bandera de Chile",
+    flagFrance: "Bandera de Francia",
   },
   experience: {
     label: "Experiencia",
@@ -204,6 +208,8 @@ const fr: Dict = {
     prize: "1er prix, Thales RISC-V",
     getInTouch: "Me contacter",
     classicCv: "CV classique",
+    flagChile: "Drapeau du Chili",
+    flagFrance: "Drapeau de la France",
   },
   experience: {
     label: "Expérience",

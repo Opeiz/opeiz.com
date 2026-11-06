@@ -10,6 +10,7 @@ import { Icon } from "@/components/Icon";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OrgLogo } from "@/components/OrgLogo";
 import { PlatformBadges } from "@/components/PlatformBadges";
+import { WavingFlag } from "@/components/WavingFlag";
 import { PuzzleArcade } from "@/components/puzzles/PuzzleArcade";
 import { formatRange, getCv, type CV, type Entry, type IconItem, type IconName, type Venture } from "@/data/cv";
 import { hasLang, type Lang } from "@/i18n/config";
@@ -57,7 +58,14 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
                   {cv.name}
                 </h1>
               </div>
-              <Avatar cv={cv} />
+              {/* Photo, with the flags of my two homes waving under it */}
+              <div className="flex shrink-0 flex-col items-center gap-3">
+                <Avatar cv={cv} />
+                <div className="flex gap-3">
+                  <WavingFlag country="cl" label={dict.hero.flagChile} />
+                  <WavingFlag country="fr" label={dict.hero.flagFrance} />
+                </div>
+              </div>
             </div>
 
             <p className="mt-5 font-mono text-xs tracking-widest text-muted uppercase md:text-sm">{cv.role}</p>

@@ -33,6 +33,23 @@
 }
 
 /* Make the tokens usable as Tailwind classes: bg-surface, text-muted, border-border... */
+/* Waving flags (components/WavingFlag.tsx): enables the animate-flag-wave class.
+   Each strip goes up and down by its own --amp, and gets a bit lighter/darker like folds in cloth. */
+@theme {
+  --animate-flag-wave: flag-wave 1.6s ease-in-out infinite;
+  @keyframes flag-wave {
+    0%,
+    100% {
+      transform: translateY(calc(var(--amp) * -1));
+      filter: brightness(1.08);
+    }
+    50% {
+      transform: translateY(var(--amp));
+      filter: brightness(0.86);
+    }
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
