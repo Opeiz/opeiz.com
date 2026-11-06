@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExperienceCarousel } from "@/components/ExperienceCarousel";
+import { HexBackground } from "@/components/HexBackground";
 import { Icon } from "@/components/Icon";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OrgLogo } from "@/components/OrgLogo";
@@ -33,12 +34,11 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
     <>
       <SiteHeader cv={cv} dict={dict} lang={lang} />
 
+      {/* The faint hexagon grid with its endless line, behind everything */}
+      <HexBackground />
       <main>
         {/* 1. ABOUT (hero) ------------------------------------------------ */}
         <section id="about" aria-labelledby="about-title" className="relative scroll-mt-20 overflow-hidden">
-          {/* Decorative dotted grid, full width, behind the content */}
-          <div aria-hidden="true" className="bg-dots pointer-events-none absolute inset-0 -z-10" />
-
           <div className={`${container} pt-14 pb-20 md:pt-24 md:pb-28`}>
             <div className="flex flex-col-reverse gap-8 md:flex-row md:items-start md:justify-between">
               <div>
