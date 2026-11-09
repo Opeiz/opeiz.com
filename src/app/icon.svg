@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Browser tab icon: a hexagon with "J." (Next.js serves this file automatically as the icon). -->
+  <!-- Light tabs: ink hexagon, white J. Dark tabs: light hexagon, ink J. The dot stays orange. -->
+  <style>
+    .hex { fill: #17171a; stroke: #17171a; }
+    .j { fill: #ffffff; }
+    .dot { fill: #e0561c; }
+    @media (prefers-color-scheme: dark) {
+      .hex { fill: #ece9e2; stroke: #ece9e2; }
+      .j { fill: #17171a; }
+      .dot { fill: #d9480f; }
+    }
+  </style>
+  <!-- pointy-top hexagon; the thick round stroke softens the corners -->
+  <polygon class="hex" points="32,3 57.1,17.5 57.1,46.5 32,61 6.9,46.5 6.9,17.5" stroke-width="4" stroke-linejoin="round" />
+  <text class="j" x="28.5" y="46" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700" text-anchor="middle">J</text>
+  <circle class="dot" cx="43.5" cy="42.5" r="4.6" />
+</svg>
